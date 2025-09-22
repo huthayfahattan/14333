@@ -20,13 +20,197 @@
         </div>
       </div>
       <nav class="category-nav" id="categoryNav"></nav>
+      <div class="role-switcher">
+        <label for="roleSelect" class="sr-only">الدور</label>
+        <select id="roleSelect" title="اختيار الدور">
+          <option value="customer">عميل</option>
+          <option value="store">المطعم</option>
+          <option value="admin">المالك</option>
+        </select>
+        <label for="langSelect" class="sr-only">اللغة</label>
+        <select id="langSelect" title="Language">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+        </select>
+      </div>
       <button class="cart-button" id="openCartBtn" aria-label="فتح السلة">
         🛒 <span id="cartCount">0</span>
       </button>
     </header>
 
     <main class="content">
-      <section id="menuContainer" class="menu-container" aria-live="polite"></section>
+      <!-- واجهة العميل -->
+      <section id="customerView">
+        <div class="category-section">
+          <div class="category-header">
+            <h3 class="category-title" id="trackTitle">تتبّع طلبك / إعادة طباعة الفاتورة</h3>
+            <p class="category-desc" id="trackSubtitle">أدخل رقم الطلب لعرض الفاتورة</p>
+          </div>
+          <div class="items-grid">
+            <div class="card" style="grid-column: 1/-1;">
+              <div class="actions" style="gap: 12px;">
+                <input id="trackInput" placeholder="مثال: ord_ab12cd" style="flex:1; min-width: 220px; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);" />
+                <button id="trackBtn" class="secondary-btn">عرض الفاتورة</button>
+              </div>
+            </div>
+            <div class="card" style="grid-column: 1/-1;">
+              <h4 style="margin:0 0 8px;" id="recentTitle">آخر الطلبات</h4>
+              <div id="recentOrders" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-section">
+          <div class="category-header">
+            <h3 class="category-title" id="filterTitle">تصفية القائمة</h3>
+            <p class="category-desc" id="filterSubtitle">اختيار فئة أو البحث بالاسم</p>
+          </div>
+          <div class="items-grid" style="align-items:center;">
+            <div class="card" style="display:flex; gap:10px; align-items:center; grid-column:1/-1;">
+              <select id="filterCategory" style="padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);">
+                <option value="all">كل الفئات</option>
+              </select>
+              <input id="filterSearch" placeholder="ابحث عن صنف..." style="flex:1; min-width:200px; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);" />
+              <select id="filterSort" title="ترتيب" style="padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);">
+                <option value="none">بدون ترتيب</option>
+                <option value="price-asc">السعر: من الأقل للأعلى</option>
+                <option value="price-desc">السعر: من الأعلى للأقل</option>
+                <option value="name-asc">الاسم: أ → ي</option>
+                <option value="name-desc">الاسم: ي → أ</option>
+              </select>
+              <button id="clearFilters" class="secondary-btn">مسح الفلاتر</button>
+              <button id="copyFilterLink" class="primary-btn">نسخ رابط التصفية</button>
+            </div>
+          </div>
+        </div>
+
+        <section id="menuContainer" class="menu-container" aria-live="polite"></section>
+      </section>
+
+      <!-- واجهة المطعم (الاستلام وإدارة الحالة) -->
+      <section id="storeView" hidden>
+        <div class="category-section">
+          <div class="category-header">
+            <h3 class="category-title">طلبات واردة</h3>
+            <p class="category-desc">تحديثات فورية بين التبويبات</p>
+          </div>
+          <div class="items-grid" id="storeOrders"></div>
+        </div>
+        <div class="category-section">
+          <div class="category-header">
+            <h3 class="category-title">إعدادات الصوت</h3>
+            <p class="category-desc">تنبيه للطلبات الجديدة</p>
+          </div>
+          <div class="items-grid">
+            <div class="card" style="grid-column: 1/-1; display:flex; align-items:center; justify-content:space-between;">
+              <div>
+                <h4 style="margin:0 0 6px;">صوت الطلب الجديد</h4>
+                <p class="muted" style="margin:0;">تشغيل/كتم واختبار النغمة</p>
+              </div>
+              <div class="actions">
+                <label style="display:flex; align-items:center; gap:8px;">
+                  <input type="checkbox" id="muteToggle" /> كتم
+                </label>
+                <button id="testRingtone" class="secondary-btn">اختبار</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="category-section">
+          <div class="category-header">
+            <h3 class="category-title">إضافة صنف (المطعم)</h3>
+            <p class="category-desc">إضافات سريعة كعروض يومية</p>
+          </div>
+          <div class="items-grid">
+            <div class="card" style="grid-column:1/-1;">
+              <form id="storeAddItemForm" class="checkout-form">
+                <label>الفئة<select name="categoryId" required></select></label>
+                <label>اسم الصنف (عربي)<input name="name" required placeholder="اسم الصنف" /></label>
+                <label>اسم الصنف (English)<input name="name_en" placeholder="Item name (en)" /></label>
+                <label>الوصف (عربي)<textarea name="desc" rows="2" placeholder="وصف مختصر"></textarea></label>
+                <label>الوصف (English)<textarea name="desc_en" rows="2" placeholder="Short description (en)"></textarea></label>
+                <label>السعر<input name="price" type="number" step="0.01" min="0" required placeholder="0" /></label>
+                <label>صورة<input name="image" type="file" accept="image/*" /></label>
+                <label>خيارات (JSON)
+                  <textarea name="mods" rows="3" placeholder='مثال: [{"id":"sauce","name":"الصوص","type":"single","required":false,"options":[{"id":"sp","name":"سبايسي","priceDelta":2}]}]'></textarea>
+                </label>
+                <button type="button" id="adminModsBuilderBtn" class="secondary-btn">منشئ الخيارات</button>
+                <div class="modal-actions"><button type="submit" class="primary-btn">إضافة</button></div>
+              </form>
+            </div>
+            <div class="card" style="grid-column:1/-1;">
+              <h4 style="margin:0 0 8px;">إدارة الأصناف (المطعم)</h4>
+              <div id="storeItems" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+            </div>
+            <div class="card" style="grid-column:1/-1;">
+              <h4 style="margin:0 0 8px;">إدارة الفئات (المطعم)</h4>
+              <form id="storeAddCategoryForm" class="checkout-form" style="margin-top:8px;">
+                <label>اسم الفئة (عربي)<input name="title" required placeholder="مثال: عروض اليوم" /></label>
+                <label>اسم الفئة (English)<input name="title_en" placeholder="e.g., Daily Specials" /></label>
+                <label>وصف (عربي - اختياري)<input name="description" placeholder="وصف للفئة" /></label>
+                <label>وصف (English - optional)<input name="description_en" placeholder="Category description (en)" /></label>
+                <div class="modal-actions"><button type="submit" class="secondary-btn">إضافة فئة</button></div>
+              </form>
+              <div id="storeCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- واجهة المالك -->
+      <section id="adminView" hidden>
+        <div class="category-section">
+          <div class="category-header">
+            <h3 class="category-title">لوحة المالك</h3>
+            <p class="category-desc">نظرة عامة على الطلبات والمبيعات</p>
+          </div>
+          <div class="items-grid">
+            <div class="card"><h4>إجمالي الطلبات</h4><div class="kpi" id="kpiOrders">0</div></div>
+            <div class="card"><h4>إجمالي الإيراد</h4><div class="kpi" id="kpiRevenue">0 ر.س</div></div>
+            <div class="card"><h4>الحالة: قيد التحضير</h4><div class="kpi" id="kpiInProgress">0</div></div>
+            <div class="card"><h4>الحالة: جاهز</h4><div class="kpi" id="kpiReady">0</div></div>
+          </div>
+        </div>
+        <div class="category-section">
+          <div class="category-header">
+            <h3 class="category-title">إضافة صنف للقائمة (المالك)</h3>
+            <p class="category-desc">الصورة اختيارية (PNG/JPG)</p>
+          </div>
+          <div class="items-grid">
+            <div class="card" style="grid-column:1/-1;">
+              <form id="adminAddItemForm" class="checkout-form">
+                <label>الفئة<select name="categoryId" required></select></label>
+                <label>اسم الصنف (عربي)<input name="name" required placeholder="اسم الصنف" /></label>
+                <label>اسم الصنف (English)<input name="name_en" placeholder="Item name (en)" /></label>
+                <label>الوصف (عربي)<textarea name="desc" rows="2" placeholder="وصف مختصر"></textarea></label>
+                <label>الوصف (English)<textarea name="desc_en" rows="2" placeholder="Short description (en)"></textarea></label>
+                <label>السعر<input name="price" type="number" step="0.01" min="0" required placeholder="0" /></label>
+                <label>صورة<input name="image" type="file" accept="image/*" /></label>
+                <label>خيارات (JSON)
+                  <textarea name="mods" rows="3" placeholder='مثال: [{"id":"meat","name":"اللحم","type":"multi","required":false,"options":[{"id":"extra","name":"زيادة لحم","priceDelta":5}]}]'></textarea>
+                </label>
+                <button type="button" id="storeModsBuilderBtn" class="secondary-btn">منشئ الخيارات</button>
+                <div class="modal-actions"><button type="submit" class="primary-btn">إضافة</button></div>
+              </form>
+            </div>
+            <div class="card" style="grid-column:1/-1;">
+              <h4 style="margin:0 0 8px;">إدارة الأصناف المضافة</h4>
+              <div id="adminItems" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+            </div>
+            <div class="card" style="grid-column:1/-1;">
+              <h4 style="margin:0 0 8px;">إدارة الفئات (إضافة/حذف)</h4>
+              <form id="adminAddCategoryForm" class="checkout-form" style="margin-top:8px;">
+                <label>اسم الفئة (عربي)<input name="title" required placeholder="مثال: حلويات" /></label>
+                <label>اسم الفئة (English)<input name="title_en" placeholder="e.g., Desserts" /></label>
+                <label>وصف (عربي - اختياري)<input name="description" placeholder="وصف للفئة" /></label>
+                <label>وصف (English - optional)<input name="description_en" placeholder="Category description (en)" /></label>
+                <div class="modal-actions"><button type="submit" class="secondary-btn">إضافة فئة</button></div>
+              </form>
+              <div id="adminCategories" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- سلة المشتريات -->
@@ -84,6 +268,85 @@
             <button type="submit" class="primary-btn">تأكيد الطلب</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- نافذة تعديل صنف -->
+    <div class="modal" id="editItemModal" aria-hidden="true" role="dialog" aria-labelledby="editItemTitle">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="editItemTitle">تعديل الصنف</h3>
+          <button class="icon-btn" id="closeEditItemBtn" aria-label="إغلاق">✕</button>
+        </div>
+        <form id="editItemForm" class="checkout-form">
+          <input type="hidden" name="id" />
+          <label>اسم الصنف (عربي)
+            <input name="name" required />
+          </label>
+          <label>اسم الصنف (English)
+            <input name="name_en" />
+          </label>
+          <label>الوصف (عربي)
+            <textarea name="desc" rows="2"></textarea>
+          </label>
+          <label>الوصف (English)
+            <textarea name="desc_en" rows="2"></textarea>
+          </label>
+          <label>السعر
+            <input type="number" name="price" step="0.01" min="0" required />
+          </label>
+          <label>صورة جديدة (اختياري)
+            <input type="file" name="image" accept="image/*" />
+          </label>
+          <label>خيارات (JSON)
+            <textarea name="mods" rows="3" placeholder='مثال: [{"id":"sauce","name":"الصوص","type":"single","required":false,"options":[{"id":"sp","name":"سبايسي","priceDelta":2}]}]'></textarea>
+          </label>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <img id="editImagePreview" alt="preview" style="width:90px; height:70px; object-fit:cover; border-radius:8px; border:1px solid rgba(0,0,0,.08); display:none;" />
+            <label style="display:flex; align-items:center; gap:6px;">
+              <input type="checkbox" id="removeImageCheckbox" /> إزالة الصورة الحالية
+            </label>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="secondary-btn" id="cancelEditItem">إلغاء</button>
+            <button type="submit" class="primary-btn">حفظ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- نافذة تخصيص الصنف قبل الإضافة -->
+    <div class="modal" id="customizeModal" aria-hidden="true" role="dialog" aria-labelledby="customizeTitle">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="customizeTitle">تخصيص الطلب</h3>
+          <button class="icon-btn" id="closeCustomizeBtn" aria-label="إغلاق">✕</button>
+        </div>
+        <form id="customizeForm" class="checkout-form">
+          <div id="customizeGroups" class="customize-groups"></div>
+          <div class="modal-actions">
+            <button type="button" class="secondary-btn" id="cancelCustomize">إلغاء</button>
+            <button type="submit" class="primary-btn">إضافة للسلة</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- نافذة منشئ الخيارات -->
+    <div class="modal" id="modsBuilderModal" aria-hidden="true" role="dialog" aria-labelledby="modsBuilderTitle">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="modsBuilderTitle">منشئ الخيارات</h3>
+          <button class="icon-btn" id="closeModsBuilderBtn" aria-label="إغلاق">✕</button>
+        </div>
+        <div class="checkout-form" id="modsBuilderBody">
+          <div id="modsGroupsList" class="customize-groups"></div>
+          <button id="addGroupBtn" class="secondary-btn" type="button">إضافة مجموعة</button>
+          <div class="modal-actions">
+            <button class="secondary-btn" id="cancelModsBuilder" type="button">إلغاء</button>
+            <button class="primary-btn" id="saveModsBuilder" type="button">حفظ</button>
+          </div>
+        </div>
       </div>
     </div>
 
