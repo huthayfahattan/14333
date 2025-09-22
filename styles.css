@@ -5,8 +5,8 @@
   --subtle: #f4eee6;    /* softer beige */
   --text: #243a35;      /* deep greenish text */
   --muted: #667a73;     /* muted text */
-  --brand: #c41e3a;     /* primary red */
-  --brand-2: #e06a78;   /* secondary light red */
+  --brand: #3e5954;     /* primary deep green */
+  --brand-2: #69c1b6;   /* secondary teal */
   --danger: #c41e3a;    /* red accent */
   --shadow: 0 10px 30px rgba(0,0,0,.10);
 }

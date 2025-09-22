@@ -5,12 +5,12 @@ const defaultMenu = [
     title: '🥪 سندويتشات مميزة',
     description: 'اختيار من أفضل السندويتشات بطابع لوليفو',
     items: [
-      { id: 'special-sandwich', name: "L’olivo Special Sandwich", desc: 'جبنة إمنتال & شيدر، خرشوف، أوريغانو، صوص خاص', price: 27.6 },
-      { id: 'cheese-club', name: 'Cheese Club Sandwich', desc: 'بارميزان & إمنتال، طماطم، أوريغانو + صوص', price: 33.35 },
-      { id: 'roast-beef', name: 'Roast Beef Sandwich', desc: 'روست بيف مدخن، إمنتال، خردل، أوريغانو + صوص', price: 32.2 },
-      { id: 'italian-tuna', name: 'Italian Tuna Sandwich', desc: 'تونة إيطالية، إمنتال، طماطم، أوريغانو + صوص', price: 39.1 },
-      { id: 'mozzarella-bufala', name: 'Mozzarella Bufala Sandwich', desc: 'موزاريلا بوفالا، طماطم، أوريغانو، بيستو، خبز شاباتا زيتون', price: 33.35 },
-      { id: 'turkey-royal', name: 'Turkey Royal', desc: 'ديك رومي مدخن، إمنتال، طماطم، أوريغانو + صوص', price: 51.75 },
+      { id: 'special-sandwich', name: "L'olivo Special Sandwich", desc: 'جبنة إمنتال & شيدر، خرشوف، أوريغانو، صوص خاص', price: 27.6, image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop&crop=center' },
+      { id: 'cheese-club', name: 'Cheese Club Sandwich', desc: 'بارميزان & إمنتال، طماطم، أوريغانو + صوص', price: 33.35, image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center' },
+      { id: 'roast-beef', name: 'Roast Beef Sandwich', desc: 'روست بيف مدخن، إمنتال، خردل، أوريغانو + صوص', price: 32.2, image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center' },
+      { id: 'italian-tuna', name: 'Italian Tuna Sandwich', desc: 'تونة إيطالية، إمنتال، طماطم، أوريغانو + صوص', price: 39.1, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center' },
+      { id: 'mozzarella-bufala', name: 'Mozzarella Bufala Sandwich', desc: 'موزاريلا بوفالا، طماطم، أوريغانو، بيستو، خبز شاباتا زيتون', price: 33.35, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center' },
+      { id: 'turkey-royal', name: 'Turkey Royal', desc: 'ديك رومي مدخن، إمنتال، طماطم، أوريغانو + صوص', price: 51.75, image: 'https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
@@ -18,11 +18,11 @@ const defaultMenu = [
     title: '🎁 بوكسات الجمعات',
     description: 'خيارات متنوعة للحفلات والجمعات',
     items: [
-      { id: 'make-your-box', name: 'اصنع بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95 },
-      { id: 'mini-bites', name: 'لوليفو ميني بايت بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95 },
-      { id: 'small-focaccia', name: 'بوكس فوكاشيا صغير', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95 },
-      { id: 'pretzel-box', name: 'بوكس البريتزل', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95 },
-      { id: 'croissant-box', name: 'كرواسون بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95 },
+      { id: 'make-your-box', name: 'اصنع بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'mini-bites', name: 'لوليفو ميني بايت بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'small-focaccia', name: 'بوكس فوكاشيا صغير', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'pretzel-box', name: 'بوكس البريتزل', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'croissant-box', name: 'كرواسون بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
@@ -30,11 +30,11 @@ const defaultMenu = [
     title: '🥩 سندويتشات مشوية وأطباق اللحوم',
     description: 'مشويات لذيذة وطرية',
     items: [
-      { id: 'grilled-chicken-pesto', name: 'دجاج مشوي بيستو', price: 36 },
-      { id: 'grilled-halloumi-pesto', name: 'حلومي بيستو مشوي', price: 34 },
-      { id: 'manzo-tenderloin', name: 'لحم مانزو تندرلوين متبّل', price: 49.45 },
-      { id: 'truffle-steak', name: 'ترفل ستيك', price: 49.45 },
-      { id: 'steak-frites', name: 'ستيك فريتس', price: 49.45 },
+      { id: 'grilled-chicken-pesto', name: 'دجاج مشوي بيستو', price: 36, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=300&fit=crop&crop=center' },
+      { id: 'grilled-halloumi-pesto', name: 'حلومي بيستو مشوي', price: 34, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center' },
+      { id: 'manzo-tenderloin', name: 'لحم مانزو تندرلوين متبّل', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center' },
+      { id: 'truffle-steak', name: 'ترفل ستيك', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center' },
+      { id: 'steak-frites', name: 'ستيك فريتس', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
@@ -42,9 +42,9 @@ const defaultMenu = [
     title: '🥗 سلطات (Salads)',
     description: 'سلطات طازجة ومتوازنة',
     items: [
-      { id: 'lolivo-salad', name: 'سلطة لوليفو', desc: 'خس عضوي، جرجير، طماطم كرزية، بارميزان، أوريغانو، خل بلسميك', price: 32 },
-      { id: 'caesar-chicken', name: 'سلطة دجاج سيزر', desc: 'دجاج متبل، خس، خبز محمّص، بارميزان، صوص سيزر', price: 32 },
-      { id: 'chicken-feta', name: 'سلطة دجاج و فيتا', desc: 'دجاج متبل، خس، فيتا، طماطم كرزية، زيت زيتون بالليمون', price: 29 },
+      { id: 'lolivo-salad', name: 'سلطة لوليفو', desc: 'خس عضوي، جرجير، طماطم كرزية، بارميزان، أوريغانو، خل بلسميك', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center' },
+      { id: 'caesar-chicken', name: 'سلطة دجاج سيزر', desc: 'دجاج متبل، خس، خبز محمّص، بارميزان، صوص سيزر', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center' },
+      { id: 'chicken-feta', name: 'سلطة دجاج و فيتا', desc: 'دجاج متبل، خس، فيتا، طماطم كرزية، زيت زيتون بالليمون', price: 29, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
@@ -52,7 +52,7 @@ const defaultMenu = [
     title: '🧀 أطباق جانبية مشهورة',
     description: 'مشاركات وللقعدة',
     items: [
-      { id: 'big-cheese-platter', name: 'طبق جبن كبير', price: 259 },
+      { id: 'big-cheese-platter', name: 'طبق جبن كبير', price: 259, image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
@@ -60,8 +60,8 @@ const defaultMenu = [
     title: '🍟 شرائح البطاطس',
     description: 'مقرمشة وساخنة',
     items: [
-      { id: 'truffle-fries', name: 'شرائح البطاطس مع الترافل', price: 18 },
-      { id: 'salt-pepper-fries', name: 'شرائح البطاطس مع الفلفل والملح', price: 17 },
+      { id: 'truffle-fries', name: 'شرائح البطاطس مع الترافل', price: 18, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&h=300&fit=crop&crop=center' },
+      { id: 'salt-pepper-fries', name: 'شرائح البطاطس مع الفلفل والملح', price: 17, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
@@ -69,9 +69,9 @@ const defaultMenu = [
     title: '🥤 المشروبات',
     description: 'منعشة وطبيعية',
     items: [
-      { id: 'soda', name: 'مشروب غازي', desc: 'كوكا كولا، سبرايت، وغيرها', price: 5 },
-      { id: 'mango-strawberry-juice', name: 'عصير مانجو طازج / فراولة', price: 12 },
-      { id: 'orange-juice', name: 'عصير برتقال طبيعي', price: 12 },
+      { id: 'soda', name: 'مشروب غازي', desc: 'كوكا كولا، سبرايت، وغيرها', price: 5, image: 'https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=400&h=300&fit=crop&crop=center' },
+      { id: 'mango-strawberry-juice', name: 'عصير مانجو طازج / فراولة', price: 12, image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop&crop=center' },
+      { id: 'orange-juice', name: 'عصير برتقال طبيعي', price: 12, image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop&crop=center' },
     ],
   },
 ];
