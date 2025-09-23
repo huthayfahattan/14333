@@ -20,18 +20,23 @@
         </div>
       </div>
       <nav class="category-nav" id="categoryNav"></nav>
-      <div class="role-switcher">
-        <label for="roleSelect" class="sr-only">الدور</label>
-        <select id="roleSelect" title="اختيار الدور">
-          <option value="customer">عميل</option>
-          <option value="store">المطعم</option>
-          <option value="admin">المالك</option>
-        </select>
-        <label for="langSelect" class="sr-only">اللغة</label>
-        <select id="langSelect" title="Language">
-          <option value="ar">العربية</option>
-          <option value="en">English</option>
-        </select>
+      <div class="header-actions">
+        <button id="supportBtn" class="support-btn" aria-label="الدعم الفني" title="الدعم الفني">
+          💬
+        </button>
+        <div class="role-switcher">
+          <label for="roleSelect" class="sr-only">الدور</label>
+          <select id="roleSelect" title="اختيار الدور">
+            <option value="customer">عميل</option>
+            <option value="store">المطعم</option>
+            <option value="admin">المالك</option>
+          </select>
+          <label for="langSelect" class="sr-only">اللغة</label>
+          <select id="langSelect" title="Language">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+          </select>
+        </div>
       </div>
       <button class="cart-button" id="openCartBtn" aria-label="فتح السلة">
         🛒 <span id="cartCount">0</span>
@@ -425,6 +430,105 @@
           <div class="modal-actions">
             <button class="secondary-btn" id="cancelCustomerCustomize" type="button">إلغاء</button>
             <button class="primary-btn" id="addToCartCustomized" type="button">إضافة للسلة</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- نافذة الدعم الفني -->
+    <div class="modal" id="supportModal" aria-hidden="true" role="dialog" aria-labelledby="supportTitle">
+      <div class="modal-card support-modal">
+        <div class="modal-header">
+          <h3 id="supportTitle">الدعم الفني</h3>
+          <button class="icon-btn" id="closeSupportBtn" aria-label="إغلاق">✕</button>
+        </div>
+        <div class="support-content">
+          <!-- خيارات الدعم -->
+          <div class="support-options">
+            <div class="support-option" data-type="chat">
+              <div class="support-icon">💬</div>
+              <div class="support-info">
+                <h4>محادثة مباشرة</h4>
+                <p>تواصل مع فريق الدعم مباشرة</p>
+              </div>
+            </div>
+            <div class="support-option" data-type="phone">
+              <div class="support-icon">📞</div>
+              <div class="support-info">
+                <h4>اتصال هاتفي</h4>
+                <p>اتصل بنا على: <strong>+966 50 123 4567</strong></p>
+              </div>
+            </div>
+            <div class="support-option" data-type="whatsapp">
+              <div class="support-icon">📱</div>
+              <div class="support-info">
+                <h4>واتساب</h4>
+                <p>راسلنا على واتساب</p>
+              </div>
+            </div>
+            <div class="support-option" data-type="email">
+              <div class="support-icon">📧</div>
+              <div class="support-info">
+                <h4>البريد الإلكتروني</h4>
+                <p>support@lolivo.com</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- نموذج المحادثة -->
+          <div id="chatForm" class="chat-form" style="display: none;">
+            <div class="chat-messages" id="chatMessages">
+              <div class="message bot-message">
+                <div class="message-content">
+                  <p>مرحباً! كيف يمكنني مساعدتك اليوم؟</p>
+                </div>
+                <div class="message-time">الآن</div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <textarea id="chatInput" placeholder="اكتب رسالتك هنا..." rows="3"></textarea>
+              <button id="sendMessageBtn" class="primary-btn">إرسال</button>
+            </div>
+          </div>
+
+          <!-- معلومات الاتصال -->
+          <div id="contactInfo" class="contact-info" style="display: none;">
+            <div class="contact-card">
+              <h4>معلومات الاتصال</h4>
+              <div class="contact-item">
+                <span class="contact-label">الهاتف:</span>
+                <a href="tel:+966501234567" class="contact-value">+966 50 123 4567</a>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">واتساب:</span>
+                <a href="https://wa.me/966501234567" class="contact-value" target="_blank">+966 50 123 4567</a>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">البريد الإلكتروني:</span>
+                <a href="mailto:support@lolivo.com" class="contact-value">support@lolivo.com</a>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">ساعات العمل:</span>
+                <span class="contact-value">9:00 ص - 12:00 م</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- الأسئلة الشائعة -->
+          <div class="faq-section">
+            <h4>الأسئلة الشائعة</h4>
+            <div class="faq-item">
+              <div class="faq-question">ما هي أوقات التوصيل؟</div>
+              <div class="faq-answer">نقوم بالتوصيل من 9 صباحاً حتى 12 منتصف الليل، أيام السبت إلى الخميس.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">هل يمكنني تعديل الطلب بعد الإرسال؟</div>
+              <div class="faq-answer">يمكن تعديل الطلب خلال 5 دقائق من الإرسال. بعد ذلك، يرجى الاتصال بنا مباشرة.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">ما هي طرق الدفع المتاحة؟</div>
+              <div class="faq-answer">نقبل الدفع نقداً عند التوصيل، أو عبر البطاقات الائتمانية.</div>
+            </div>
           </div>
         </div>
       </div>

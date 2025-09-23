@@ -199,6 +199,14 @@ const addGroupBtn = document.getElementById('addGroupBtn');
 const modsGroupsList = document.getElementById('modsGroupsList');
 const adminModsBuilderBtn = document.getElementById('adminModsBuilderBtn');
 const storeModsBuilderBtn = document.getElementById('storeModsBuilderBtn');
+const supportBtn = document.getElementById('supportBtn');
+const supportModal = document.getElementById('supportModal');
+const closeSupportBtn = document.getElementById('closeSupportBtn');
+const chatForm = document.getElementById('chatForm');
+const contactInfo = document.getElementById('contactInfo');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const sendMessageBtn = document.getElementById('sendMessageBtn');
 let modsBuilderTargetTextarea = null;
 let currentCustomizingItem = null;
 
@@ -595,6 +603,86 @@ function closeCustomerCustomize() {
   currentCustomizingItem = null;
 }
 
+// Support functions
+function openSupport() {
+  supportModal.classList.add('open');
+  supportModal.setAttribute('aria-hidden', 'false');
+  backdrop.hidden = false;
+}
+
+function closeSupport() {
+  supportModal.classList.remove('open');
+  supportModal.setAttribute('aria-hidden', 'true');
+  backdrop.hidden = true;
+  // Reset support views
+  chatForm.style.display = 'none';
+  contactInfo.style.display = 'none';
+}
+
+function handleSupportOption(type) {
+  // Hide all support views
+  chatForm.style.display = 'none';
+  contactInfo.style.display = 'none';
+  
+  switch(type) {
+    case 'chat':
+      chatForm.style.display = 'block';
+      chatInput.focus();
+      break;
+    case 'phone':
+      window.location.href = 'tel:+966501234567';
+      break;
+    case 'whatsapp':
+      window.open('https://wa.me/966501234567', '_blank');
+      break;
+    case 'email':
+      window.location.href = 'mailto:support@lolivo.com';
+      break;
+  }
+}
+
+function sendMessage() {
+  const message = chatInput.value.trim();
+  if (!message) return;
+  
+  // Add user message
+  addMessage(message, 'user');
+  chatInput.value = '';
+  
+  // Simulate bot response
+  setTimeout(() => {
+    const responses = [
+      'شكراً لك على رسالتك. سأقوم بالرد عليك في أقرب وقت ممكن.',
+      'تم استلام رسالتك. فريق الدعم سيتواصل معك قريباً.',
+      'نقدر تواصلك معنا. هل تحتاج مساعدة في شيء محدد؟',
+      'مرحباً! كيف يمكنني مساعدتك اليوم؟'
+    ];
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    addMessage(randomResponse, 'bot');
+  }, 1000);
+}
+
+function addMessage(text, sender) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${sender}-message`;
+  
+  const now = new Date();
+  const time = now.toLocaleTimeString('ar-SA', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
+  
+  messageDiv.innerHTML = `
+    <div class="message-content">
+      <p>${text}</p>
+    </div>
+    <div class="message-time">${time}</div>
+  `;
+  
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
 function buildCustomerModifiersUI(mods) {
   if (!mods || !mods.length) {
     customerModsGroups.innerHTML = '<p class="muted">لا توجد خيارات إضافية متاحة</p>';
@@ -826,7 +914,7 @@ function closeEditItem() {
 // Events
 openCartBtn.addEventListener('click', openCart);
 closeCartBtn.addEventListener('click', closeCart);
-backdrop.addEventListener('click', () => { closeCart(); closeCheckout(); closeEditItem(); closeCustomize(); closeCustomerCustomize(); });
+backdrop.addEventListener('click', () => { closeCart(); closeCheckout(); closeEditItem(); closeCustomize(); closeCustomerCustomize(); closeSupport(); });
 
 cartItemsEl.addEventListener('click', (e) => {
   const btn = e.target.closest('button');
@@ -1436,6 +1524,30 @@ if (addToCartCustomized) addToCartCustomized.addEventListener('click', addCustom
 // Update price when modifiers change
 if (customerModsGroups) {
   customerModsGroups.addEventListener('change', updateCustomerPrice);
+}
+
+// Support events
+if (supportBtn) supportBtn.addEventListener('click', openSupport);
+if (closeSupportBtn) closeSupportBtn.addEventListener('click', closeSupport);
+
+// Support options
+document.addEventListener('click', (e) => {
+  const supportOption = e.target.closest('.support-option');
+  if (supportOption) {
+    const type = supportOption.dataset.type;
+    handleSupportOption(type);
+  }
+});
+
+// Chat events
+if (sendMessageBtn) sendMessageBtn.addEventListener('click', sendMessage);
+if (chatInput) {
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
 }
 
 // Category forms and lists
