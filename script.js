@@ -158,11 +158,8 @@ const closeCheckoutBtn = document.getElementById('closeCheckoutBtn');
 const cancelCheckout = document.getElementById('cancelCheckout');
 const checkoutForm = document.getElementById('checkoutForm');
 const yearEl = document.getElementById('year');
-const trackInput = document.getElementById('trackInput');
-const trackBtn = document.getElementById('trackBtn');
 const muteToggle = document.getElementById('muteToggle');
 const testRingtoneBtn = document.getElementById('testRingtone');
-const recentOrdersEl = document.getElementById('recentOrders');
 const filterCategory = document.getElementById('filterCategory');
 const filterSearch = document.getElementById('filterSearch');
 const filterSort = document.getElementById('filterSort');
@@ -215,11 +212,10 @@ let currentLang = 'en';
 const t = {
   en: {
     allCategories: 'All categories', searchPlaceholder: 'Search item...', sort: 'Sort',
-    noCart: 'Cart is empty', invoice: 'Show invoice', trackTitle: 'Track your order / Reprint invoice',
-    trackSubtitle: 'Enter order ID to view invoice', recentTitle: 'Recent orders', filterTitle: 'Filter menu',
+    noCart: 'Cart is empty', invoice: 'Show invoice',     filterTitle: 'Filter menu',
     filterSubtitle: 'Pick a category or search by name', copyLink: 'Copy filter link', clearFilters: 'Clear filters',
     priceAsc: 'Price: Low to High', priceDesc: 'Price: High to Low', nameAsc: 'Name: A → Z', nameDesc: 'Name: Z → A',
-    total: 'Total', orderNum: 'Order #', print: 'Print / Save PDF', notFound: 'Order not found', enterId: 'Please enter order ID',
+    total: 'Total', orderNum: 'Order #', print: 'Print / Save PDF',
     addedItem: 'Item added successfully', needNamePrice: 'Please enter valid name and price'
   }
 };
@@ -1166,16 +1162,7 @@ function openInvoice(order) {
   setTimeout(() => { try { win.print(); } catch {} }, 400);
 }
 
-// ---------- Tracking & Store settings events ----------
-if (trackBtn) {
-  trackBtn.addEventListener('click', () => {
-    const id = (trackInput?.value || '').trim();
-    if (!id) return alert(t[currentLang].enterId);
-    const order = OrdersService.getAll().find(o => o.id === id);
-    if (!order) return alert(t[currentLang].notFound);
-    openInvoice(order);
-  });
-}
+// ---------- Store settings events ----------
 if (muteToggle) {
   muteToggle.addEventListener('change', () => {
     isMuted = muteToggle.checked;
@@ -1218,29 +1205,6 @@ function addRecentOrder(id) {
   const list = getRecent().filter(x => x !== id);
   list.unshift(id);
   saveRecent(list);
-  renderRecent();
-}
-function renderRecent() {
-  if (!recentOrdersEl) return;
-  const list = getRecent();
-  if (list.length === 0) {
-    recentOrdersEl.innerHTML = `<span class="muted">${currentLang === 'ar' ? 'لا يوجد سجل بعد' : 'No history yet'}</span>`;
-    return;
-  }
-  recentOrdersEl.innerHTML = list
-    .map(id => `<button class="chip" data-order-id="${id}">${id}</button>`)
-    .join('');
-}
-if (recentOrdersEl) {
-  renderRecent();
-  recentOrdersEl.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-order-id]');
-    if (!btn) return;
-    const id = btn.getAttribute('data-order-id');
-    const order = OrdersService.getAll().find(o => o.id === id);
-    if (!order) return alert('الطلب غير موجود');
-    openInvoice(order);
-  });
 }
 
 // ---------- Admin/Store add item forms ----------
