@@ -230,6 +230,122 @@
       </div>
     </div>
 
+    <!-- نافذة تخصيص الساندويتش -->
+    <div class="modal" id="sandwichCustomizeModal" aria-hidden="true" role="dialog" aria-labelledby="sandwichCustomizeTitle">
+      <div class="modal-card" style="max-width: 600px;">
+        <div class="modal-header">
+          <h3 id="sandwichCustomizeTitle">Customize Your Sandwich</h3>
+          <button class="icon-btn" id="closeSandwichCustomizeBtn" aria-label="Close">✕</button>
+        </div>
+        <div class="customize-content">
+          <div class="item-info">
+            <img id="sandwichItemImage" src="" alt="" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+            <div>
+              <h4 id="sandwichItemName"></h4>
+              <p id="sandwichItemDesc"></p>
+              <div class="price-display">
+                <span class="price-badge" id="sandwichBasePrice"></span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="customize-section">
+            <h4>Bread Type</h4>
+            <div class="options-grid">
+              <label class="option-item">
+                <input type="radio" name="breadType" value="white" checked>
+                <span>White Bread</span>
+                <span class="price-modifier">+$0.00</span>
+              </label>
+              <label class="option-item">
+                <input type="radio" name="breadType" value="wholewheat">
+                <span>Whole Wheat</span>
+                <span class="price-modifier">+$0.00</span>
+              </label>
+              <label class="option-item">
+                <input type="radio" name="breadType" value="ciabatta">
+                <span>Ciabatta</span>
+                <span class="price-modifier">+$2.00</span>
+              </label>
+              <label class="option-item">
+                <input type="radio" name="breadType" value="baguette">
+                <span>Baguette</span>
+                <span class="price-modifier">+$1.50</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="customize-section">
+            <h4>Extra Ingredients</h4>
+            <div class="options-grid">
+              <label class="option-item">
+                <input type="checkbox" name="extraIngredients" value="extra-cheese">
+                <span>Extra Cheese</span>
+                <span class="price-modifier">+$3.00</span>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" name="extraIngredients" value="extra-meat">
+                <span>Extra Meat</span>
+                <span class="price-modifier">+$5.00</span>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" name="extraIngredients" value="bacon">
+                <span>Bacon</span>
+                <span class="price-modifier">+$4.00</span>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" name="extraIngredients" value="avocado">
+                <span>Avocado</span>
+                <span class="price-modifier">+$3.50</span>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" name="extraIngredients" value="mushrooms">
+                <span>Mushrooms</span>
+                <span class="price-modifier">+$2.50</span>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" name="extraIngredients" value="onions">
+                <span>Grilled Onions</span>
+                <span class="price-modifier">+$1.50</span>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" name="extraIngredients" value="pickles">
+                <span>Extra Pickles</span>
+                <span class="price-modifier">+$1.00</span>
+              </label>
+              <label class="option-item">
+                <input type="checkbox" name="extraIngredients" value="jalapenos">
+                <span>Jalapeños</span>
+                <span class="price-modifier">+$2.00</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="customize-section">
+            <h4>Special Instructions</h4>
+            <textarea id="sandwichSpecialNotes" placeholder="Any special requests? (e.g., no onions, extra sauce, well done meat...)" rows="3" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
+          </div>
+
+          <div class="price-summary">
+            <div class="price-line">
+              <span>Base Price:</span>
+              <span id="sandwichBasePriceDisplay"></span>
+            </div>
+            <div class="price-modifiers" id="sandwichPriceModifiers"></div>
+            <div class="price-line total">
+              <span>Total:</span>
+              <span id="sandwichTotalPrice"></span>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="secondary-btn" id="cancelSandwichCustomize">Cancel</button>
+            <button type="button" class="primary-btn" id="addSandwichToCart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- نافذة تعديل صنف -->
     <div class="modal" id="editItemModal" aria-hidden="true" role="dialog" aria-labelledby="editItemTitle">
       <div class="modal-card">

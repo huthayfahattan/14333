@@ -562,4 +562,128 @@ body {
   line-height: 1.5;
 }
 
+/* Sandwich customization modal styles */
+.customize-content {
+  padding: 20px;
+}
+
+.item-info {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: var(--subtle);
+  border-radius: 12px;
+}
+
+.item-info h4 {
+  margin: 0 0 8px 0;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.item-info p {
+  margin: 0 0 12px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.customize-section {
+  margin-bottom: 24px;
+}
+
+.customize-section h4 {
+  margin: 0 0 16px 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--brand);
+  padding-bottom: 8px;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.option-item:hover {
+  border-color: var(--brand);
+  background: var(--subtle);
+}
+
+.option-item input[type="radio"]:checked + span,
+.option-item input[type="checkbox"]:checked + span {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.option-item input[type="radio"]:checked,
+.option-item input[type="checkbox"]:checked {
+  accent-color: var(--brand);
+}
+
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.price-modifier {
+  color: var(--brand);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.price-summary {
+  background: var(--subtle);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 24px 0;
+}
+
+.price-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.price-line.total {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brand);
+  border-top: 2px solid var(--border);
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.price-modifiers {
+  margin: 8px 0;
+}
+
+.price-modifier-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 

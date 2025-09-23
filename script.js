@@ -160,6 +160,19 @@ const checkoutForm = document.getElementById('checkoutForm');
 const yearEl = document.getElementById('year');
 const muteToggle = document.getElementById('muteToggle');
 const testRingtoneBtn = document.getElementById('testRingtone');
+const sandwichCustomizeModal = document.getElementById('sandwichCustomizeModal');
+const closeSandwichCustomizeBtn = document.getElementById('closeSandwichCustomizeBtn');
+const cancelSandwichCustomize = document.getElementById('cancelSandwichCustomize');
+const addSandwichToCart = document.getElementById('addSandwichToCart');
+const sandwichItemImage = document.getElementById('sandwichItemImage');
+const sandwichItemName = document.getElementById('sandwichItemName');
+const sandwichItemDesc = document.getElementById('sandwichItemDesc');
+const sandwichBasePrice = document.getElementById('sandwichBasePrice');
+const sandwichBasePriceDisplay = document.getElementById('sandwichBasePriceDisplay');
+const sandwichTotalPrice = document.getElementById('sandwichTotalPrice');
+const sandwichPriceModifiers = document.getElementById('sandwichPriceModifiers');
+const sandwichSpecialNotes = document.getElementById('sandwichSpecialNotes');
+let currentCustomizingSandwich = null;
 const editItemModal = document.getElementById('editItemModal');
 const editItemForm = document.getElementById('editItemForm');
 const closeEditItemBtn = document.getElementById('closeEditItemBtn');
@@ -336,7 +349,15 @@ function renderMenu() {
 function addToCart(item) {
   // Open customization modal for customer role
   if (currentRole === 'customer') {
-    openCustomerCustomize(item);
+    // Check if it's a sandwich (contains "sandwich" in name or category)
+    const isSandwich = item.name.toLowerCase().includes('sandwich') || 
+                      (item.category && item.category.toLowerCase().includes('sandwich'));
+    
+    if (isSandwich) {
+      openSandwichCustomize(item);
+    } else {
+      openCustomerCustomize(item);
+    }
     return;
   }
   
@@ -443,18 +464,36 @@ function updateCartUI() {
       let customizationDetails = '';
       if (item.customization) {
         const breadNames = {
-          white: 'خبز أبيض',
-          brown: 'خبز بني', 
-          ciabatta: 'شاباتا',
-          focaccia: 'فوكاشيا'
+          white: 'White Bread',
+          wholewheat: 'Whole Wheat',
+          ciabatta: 'Ciabatta',
+          baguette: 'Baguette'
         };
         
-        customizationDetails = `
-          <div class="customization-details" style="font-size: 12px; color: var(--muted); margin-top: 4px;">
-            <div>نوع الخبز: ${breadNames[item.customization.bread] || item.customization.bread}</div>
-            ${item.customization.specialNotes ? `<div>ملاحظات: ${item.customization.specialNotes}</div>` : ''}
-          </div>
-        `;
+        let details = [];
+        
+        // Bread type
+        if (item.customization.breadType) {
+          details.push(`Bread: ${breadNames[item.customization.breadType] || item.customization.breadType}`);
+        }
+        
+        // Extra ingredients
+        if (item.customization.extraIngredients && item.customization.extraIngredients.length > 0) {
+          details.push(`Extras: ${item.customization.extraIngredients.join(', ')}`);
+        }
+        
+        // Special notes
+        if (item.customization.specialNotes) {
+          details.push(`Notes: ${item.customization.specialNotes}`);
+        }
+        
+        if (details.length > 0) {
+          customizationDetails = `
+            <div class="customization-details" style="font-size: 12px; color: var(--muted); margin-top: 4px;">
+              ${details.map(detail => `<div>${detail}</div>`).join('')}
+            </div>
+          `;
+        }
       }
       
       return `
@@ -1096,6 +1135,125 @@ function openInvoice(order) {
   setTimeout(() => { try { win.print(); } catch {} }, 400);
 }
 
+// ---------- Sandwich customization functions ----------
+function openSandwichCustomize(item) {
+  currentCustomizingSandwich = item;
+  
+  // Populate item info
+  sandwichItemImage.src = item.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyMEg2MFY2MEgyMFYyMFoiIHN0cm9rZT0iI0NDQyIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+CjxwYXRoIGQ9Ik0zMCAzMEg1MFY1MEgzMFYzMFoiIHN0cm9rZT0iI0NDQyIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIi8+Cjwvc3ZnPgo=';
+  sandwichItemImage.alt = item.name;
+  sandwichItemName.textContent = item.name;
+  sandwichItemDesc.textContent = item.desc || '';
+  sandwichBasePrice.textContent = formatPrice(item.price);
+  sandwichBasePriceDisplay.textContent = formatPrice(item.price);
+  
+  // Reset form
+  document.querySelector('input[name="breadType"][value="white"]').checked = true;
+  document.querySelectorAll('input[name="extraIngredients"]').forEach(cb => cb.checked = false);
+  sandwichSpecialNotes.value = '';
+  
+  // Update price
+  updateSandwichPrice();
+  
+  // Show modal
+  sandwichCustomizeModal.hidden = false;
+  sandwichCustomizeModal.setAttribute('aria-hidden', 'false');
+}
+
+function closeSandwichCustomize() {
+  sandwichCustomizeModal.hidden = true;
+  sandwichCustomizeModal.setAttribute('aria-hidden', 'true');
+  currentCustomizingSandwich = null;
+}
+
+function updateSandwichPrice() {
+  if (!currentCustomizingSandwich) return;
+  
+  let totalPrice = currentCustomizingSandwich.price;
+  let modifiers = [];
+  
+  // Bread type price
+  const breadType = document.querySelector('input[name="breadType"]:checked').value;
+  const breadPrices = {
+    'white': 0,
+    'wholewheat': 0,
+    'ciabatta': 2,
+    'baguette': 1.5
+  };
+  const breadPrice = breadPrices[breadType] || 0;
+  if (breadPrice > 0) {
+    totalPrice += breadPrice;
+    modifiers.push({ name: `${breadType.charAt(0).toUpperCase() + breadType.slice(1)} Bread`, price: breadPrice });
+  }
+  
+  // Extra ingredients
+  const extraIngredients = document.querySelectorAll('input[name="extraIngredients"]:checked');
+  const ingredientPrices = {
+    'extra-cheese': 3,
+    'extra-meat': 5,
+    'bacon': 4,
+    'avocado': 3.5,
+    'mushrooms': 2.5,
+    'onions': 1.5,
+    'pickles': 1,
+    'jalapenos': 2
+  };
+  
+  extraIngredients.forEach(ingredient => {
+    const price = ingredientPrices[ingredient.value] || 0;
+    if (price > 0) {
+      totalPrice += price;
+      const name = ingredient.nextElementSibling.textContent;
+      modifiers.push({ name, price });
+    }
+  });
+  
+  // Update display
+  sandwichTotalPrice.textContent = formatPrice(totalPrice);
+  
+  // Update modifiers list
+  sandwichPriceModifiers.innerHTML = modifiers
+    .map(mod => `<div class="price-modifier-line"><span>${mod.name}</span><span>+${formatPrice(mod.price)}</span></div>`)
+    .join('');
+}
+
+function addCustomizedSandwichToCart() {
+  if (!currentCustomizingSandwich) return;
+  
+  // Collect customization data
+  const breadType = document.querySelector('input[name="breadType"]:checked').value;
+  const extraIngredients = Array.from(document.querySelectorAll('input[name="extraIngredients"]:checked'))
+    .map(cb => cb.nextElementSibling.textContent);
+  const specialNotes = sandwichSpecialNotes.value.trim();
+  
+  // Calculate final price
+  let finalPrice = currentCustomizingSandwich.price;
+  const breadPrices = { 'white': 0, 'wholewheat': 0, 'ciabatta': 2, 'baguette': 1.5 };
+  const ingredientPrices = { 'extra-cheese': 3, 'extra-meat': 5, 'bacon': 4, 'avocado': 3.5, 'mushrooms': 2.5, 'onions': 1.5, 'pickles': 1, 'jalapenos': 2 };
+  
+  finalPrice += breadPrices[breadType] || 0;
+  document.querySelectorAll('input[name="extraIngredients"]:checked').forEach(cb => {
+    finalPrice += ingredientPrices[cb.value] || 0;
+  });
+  
+  // Create customized item
+  const customizedItem = {
+    ...currentCustomizingSandwich,
+    customization: {
+      breadType,
+      extraIngredients,
+      specialNotes,
+      finalPrice
+    }
+  };
+  
+  // Add to cart
+  addToCart(customizedItem);
+  
+  // Close modal
+  closeSandwichCustomize();
+}
+
 // ---------- Store settings events ----------
 if (muteToggle) {
   muteToggle.addEventListener('change', () => {
@@ -1106,6 +1264,24 @@ if (muteToggle) {
 if (testRingtoneBtn) {
   testRingtoneBtn.addEventListener('click', () => playNewOrderSound());
 }
+
+// ---------- Sandwich customization events ----------
+if (closeSandwichCustomizeBtn) {
+  closeSandwichCustomizeBtn.addEventListener('click', closeSandwichCustomize);
+}
+if (cancelSandwichCustomize) {
+  cancelSandwichCustomize.addEventListener('click', closeSandwichCustomize);
+}
+if (addSandwichToCart) {
+  addSandwichToCart.addEventListener('click', addCustomizedSandwichToCart);
+}
+
+// Listen for changes in customization options
+document.addEventListener('change', (e) => {
+  if (e.target.name === 'breadType' || e.target.name === 'extraIngredients') {
+    updateSandwichPrice();
+  }
+});
 
 
 // ---------- Recent orders ----------
