@@ -464,36 +464,18 @@ function updateCartUI() {
       let customizationDetails = '';
       if (item.customization) {
         const breadNames = {
-          white: 'White Bread',
-          wholewheat: 'Whole Wheat',
-          ciabatta: 'Ciabatta',
-          baguette: 'Baguette'
+          white: 'خبز أبيض',
+          brown: 'خبز بني', 
+          ciabatta: 'شاباتا',
+          focaccia: 'فوكاشيا'
         };
         
-        let details = [];
-        
-        // Bread type
-        if (item.customization.breadType) {
-          details.push(`Bread: ${breadNames[item.customization.breadType] || item.customization.breadType}`);
-        }
-        
-        // Extra ingredients
-        if (item.customization.extraIngredients && item.customization.extraIngredients.length > 0) {
-          details.push(`Extras: ${item.customization.extraIngredients.join(', ')}`);
-        }
-        
-        // Special notes
-        if (item.customization.specialNotes) {
-          details.push(`Notes: ${item.customization.specialNotes}`);
-        }
-        
-        if (details.length > 0) {
-          customizationDetails = `
-            <div class="customization-details" style="font-size: 12px; color: var(--muted); margin-top: 4px;">
-              ${details.map(detail => `<div>${detail}</div>`).join('')}
-            </div>
-          `;
-        }
+        customizationDetails = `
+          <div class="customization-details" style="font-size: 12px; color: var(--muted); margin-top: 4px;">
+            <div>نوع الخبز: ${breadNames[item.customization.bread] || item.customization.bread}</div>
+            ${item.customization.specialNotes ? `<div>ملاحظات: ${item.customization.specialNotes}</div>` : ''}
+          </div>
+        `;
       }
       
       return `
