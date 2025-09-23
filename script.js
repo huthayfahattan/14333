@@ -5,12 +5,12 @@ const defaultMenu = [
     title: '🥪 سندويتشات مميزة',
     description: 'اختيار من أفضل السندويتشات بطابع لوليفو',
     items: [
-      { id: 'special-sandwich', name: "L'olivo Special Sandwich", desc: 'جبنة إمنتال & شيدر، خرشوف، أوريغانو، صوص خاص', price: 27.6, image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop&crop=center' },
-      { id: 'cheese-club', name: 'Cheese Club Sandwich', desc: 'بارميزان & إمنتال، طماطم، أوريغانو + صوص', price: 33.35, image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center' },
-      { id: 'roast-beef', name: 'Roast Beef Sandwich', desc: 'روست بيف مدخن، إمنتال، خردل، أوريغانو + صوص', price: 32.2, image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center' },
-      { id: 'italian-tuna', name: 'Italian Tuna Sandwich', desc: 'تونة إيطالية، إمنتال، طماطم، أوريغانو + صوص', price: 39.1, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center' },
-      { id: 'mozzarella-bufala', name: 'Mozzarella Bufala Sandwich', desc: 'موزاريلا بوفالا، طماطم، أوريغانو، بيستو، خبز شاباتا زيتون', price: 33.35, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center' },
-      { id: 'turkey-royal', name: 'Turkey Royal', desc: 'ديك رومي مدخن، إمنتال، طماطم، أوريغانو + صوص', price: 51.75, image: 'https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&h=300&fit=crop&crop=center' },
+      { id: 'special-sandwich', name: "L'olivo Special Sandwich", desc: 'جبنة إمنتال & شيدر، خرشوف، أوريغانو، صوص خاص', price: 27.6, image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.8, deliveryTime: '15-20 دقيقة' },
+      { id: 'cheese-club', name: 'Cheese Club Sandwich', desc: 'بارميزان & إمنتال، طماطم، أوريغانو + صوص', price: 33.35, image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '12-18 دقيقة' },
+      { id: 'roast-beef', name: 'Roast Beef Sandwich', desc: 'روست بيف مدخن، إمنتال، خردل، أوريغانو + صوص', price: 32.2, image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center', rating: 4.7, deliveryTime: '15-20 دقيقة' },
+      { id: 'italian-tuna', name: 'Italian Tuna Sandwich', desc: 'تونة إيطالية، إمنتال، طماطم، أوريغانو + صوص', price: 39.1, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '10-15 دقيقة' },
+      { id: 'mozzarella-bufala', name: 'Mozzarella Bufala Sandwich', desc: 'موزاريلا بوفالا، طماطم، أوريغانو، بيستو، خبز شاباتا زيتون', price: 33.35, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.9, deliveryTime: '18-25 دقيقة' },
+      { id: 'turkey-royal', name: 'Turkey Royal', desc: 'ديك رومي مدخن، إمنتال، طماطم، أوريغانو + صوص', price: 51.75, image: 'https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&h=300&fit=crop&crop=center', rating: 4.8, deliveryTime: '20-25 دقيقة' },
     ],
   },
   {
@@ -30,11 +30,11 @@ const defaultMenu = [
     title: '🥩 سندويتشات مشوية وأطباق اللحوم',
     description: 'مشويات لذيذة وطرية',
     items: [
-      { id: 'grilled-chicken-pesto', name: 'دجاج مشوي بيستو', price: 36, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=300&fit=crop&crop=center' },
-      { id: 'grilled-halloumi-pesto', name: 'حلومي بيستو مشوي', price: 34, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center' },
-      { id: 'manzo-tenderloin', name: 'لحم مانزو تندرلوين متبّل', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center' },
-      { id: 'truffle-steak', name: 'ترفل ستيك', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center' },
-      { id: 'steak-frites', name: 'ستيك فريتس', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center' },
+      { id: 'grilled-chicken-pesto', name: 'دجاج مشوي بيستو', price: 36, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=300&fit=crop&crop=center', rating: 4.7, deliveryTime: '20-25 دقيقة' },
+      { id: 'grilled-halloumi-pesto', name: 'حلومي بيستو مشوي', price: 34, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '15-20 دقيقة' },
+      { id: 'manzo-tenderloin', name: 'لحم مانزو تندرلوين متبّل', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.9, deliveryTime: '25-30 دقيقة' },
+      { id: 'truffle-steak', name: 'ترفل ستيك', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.8, deliveryTime: '25-30 دقيقة' },
+      { id: 'steak-frites', name: 'ستيك فريتس', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '25-30 دقيقة' },
     ],
   },
   {
@@ -42,9 +42,9 @@ const defaultMenu = [
     title: '🥗 سلطات (Salads)',
     description: 'سلطات طازجة ومتوازنة',
     items: [
-      { id: 'lolivo-salad', name: 'سلطة لوليفو', desc: 'خس عضوي، جرجير، طماطم كرزية، بارميزان، أوريغانو، خل بلسميك', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center' },
-      { id: 'caesar-chicken', name: 'سلطة دجاج سيزر', desc: 'دجاج متبل، خس، خبز محمّص، بارميزان، صوص سيزر', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center' },
-      { id: 'chicken-feta', name: 'سلطة دجاج و فيتا', desc: 'دجاج متبل، خس، فيتا، طماطم كرزية، زيت زيتون بالليمون', price: 29, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center' },
+      { id: 'lolivo-salad', name: 'سلطة لوليفو', desc: 'خس عضوي، جرجير، طماطم كرزية، بارميزان، أوريغانو، خل بلسميك', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '8-12 دقيقة' },
+      { id: 'caesar-chicken', name: 'سلطة دجاج سيزر', desc: 'دجاج متبل، خس، خبز محمّص، بارميزان، صوص سيزر', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '10-15 دقيقة' },
+      { id: 'chicken-feta', name: 'سلطة دجاج و فيتا', desc: 'دجاج متبل، خس، فيتا، طماطم كرزية، زيت زيتون بالليمون', price: 29, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.4, deliveryTime: '8-12 دقيقة' },
     ],
   },
   {
@@ -328,13 +328,30 @@ function renderMenu() {
     .map((cat) => {
       const items = cat.items
         .map((it) => {
+          const cardClass = it.featured ? 'card featured-item' : 'card';
+          const ratingStars = it.rating ? `
+            <div class="rating-stars">
+              ${Array.from({length: 5}, (_, i) => 
+                `<span class="star">${i < Math.floor(it.rating) ? '★' : '☆'}</span>`
+              ).join('')}
+              <span style="margin-left: 4px; font-size: 12px; color: var(--muted);">${it.rating}</span>
+            </div>
+          ` : '';
+          
+          const deliveryTime = it.deliveryTime ? `
+            <div class="delivery-time">${it.deliveryTime}</div>
+          ` : '';
+          
           return `
-           <div class="card" data-id="${it.id}">
+           <div class="${cardClass}" data-id="${it.id}">
             ${it.image ? `<img class="item-img" src="${it.image}" alt="${it.name}"/>` : ''}
+            ${it.featured ? '<div class="delivery-badge">مميز</div>' : ''}
              <h4>${currentLang === 'ar' ? (it.name || it.name_en) : (it.name_en || it.name)}</h4>
              ${it.desc || it.desc_en ? `<p>${currentLang === 'ar' ? (it.desc || it.desc_en || '') : (it.desc_en || it.desc || '')}</p>` : '<p></p>'}
+             ${ratingStars}
+             ${deliveryTime}
             <div class="actions">
-              <span class="price">${formatPrice(it.price)}</span>
+              <span class="price-badge">${formatPrice(it.price)}</span>
               <button class="primary-btn add-to-cart" data-id="${it.id}" aria-label="add">+</button>
             </div>
           </div>`;
