@@ -357,6 +357,79 @@
       </div>
     </div>
 
+    <!-- نافذة تخصيص الطلب للعميل -->
+    <div class="modal" id="customerCustomizeModal" aria-hidden="true" role="dialog" aria-labelledby="customerCustomizeTitle">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="customerCustomizeTitle">تخصيص الطلب</h3>
+          <button class="icon-btn" id="closeCustomerCustomizeBtn" aria-label="إغلاق">✕</button>
+        </div>
+        <div class="customize-content">
+          <div id="customerItemInfo" style="margin-bottom: 20px; padding: 15px; background: var(--subtle); border-radius: 8px;">
+            <h4 id="customerItemName"></h4>
+            <p id="customerItemDesc" class="muted"></p>
+            <div class="price-display">
+              <span>السعر الأساسي: </span>
+              <strong id="customerBasePrice"></strong>
+            </div>
+          </div>
+          
+          <!-- اختيار نوع الخبز -->
+          <div class="customize-section">
+            <h4>نوع الخبز</h4>
+            <div id="breadOptions" class="options-grid">
+              <label class="option-item">
+                <input type="radio" name="bread" value="white" checked>
+                <span>خبز أبيض</span>
+              </label>
+              <label class="option-item">
+                <input type="radio" name="bread" value="brown">
+                <span>خبز بني</span>
+              </label>
+              <label class="option-item">
+                <input type="radio" name="bread" value="ciabatta">
+                <span>شاباتا</span>
+              </label>
+              <label class="option-item">
+                <input type="radio" name="bread" value="focaccia">
+                <span>فوكاشيا</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- الخيارات الإضافية -->
+          <div class="customize-section">
+            <h4>خيارات إضافية</h4>
+            <div id="customerModsGroups" class="customize-groups"></div>
+          </div>
+
+          <!-- ملاحظات خاصة -->
+          <div class="customize-section">
+            <h4>ملاحظات خاصة</h4>
+            <textarea id="customerSpecialNotes" placeholder="أي طلبات خاصة أو تعديلات إضافية..." rows="3" style="width: 100%; padding: 10px; border: 1px solid var(--subtle); border-radius: 8px; resize: vertical;"></textarea>
+          </div>
+
+          <!-- ملخص السعر -->
+          <div class="price-summary" style="margin: 20px 0; padding: 15px; background: var(--subtle); border-radius: 8px;">
+            <div class="price-line">
+              <span>السعر الأساسي:</span>
+              <span id="summaryBasePrice"></span>
+            </div>
+            <div id="priceModifiers" class="price-modifiers"></div>
+            <div class="price-line total">
+              <span>الإجمالي:</span>
+              <strong id="summaryTotalPrice"></strong>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="secondary-btn" id="cancelCustomerCustomize" type="button">إلغاء</button>
+            <button class="primary-btn" id="addToCartCustomized" type="button">إضافة للسلة</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <footer class="app-footer">
       <p>© <span id="year"></span> لوليفو. جميع الحقوق محفوظة.</p>
     </footer>

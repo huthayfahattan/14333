@@ -183,11 +183,24 @@ const modsBuilderModal = document.getElementById('modsBuilderModal');
 const closeModsBuilderBtn = document.getElementById('closeModsBuilderBtn');
 const cancelModsBuilder = document.getElementById('cancelModsBuilder');
 const saveModsBuilder = document.getElementById('saveModsBuilder');
+const customerCustomizeModal = document.getElementById('customerCustomizeModal');
+const closeCustomerCustomizeBtn = document.getElementById('closeCustomerCustomizeBtn');
+const cancelCustomerCustomize = document.getElementById('cancelCustomerCustomize');
+const addToCartCustomized = document.getElementById('addToCartCustomized');
+const customerItemName = document.getElementById('customerItemName');
+const customerItemDesc = document.getElementById('customerItemDesc');
+const customerBasePrice = document.getElementById('customerBasePrice');
+const customerModsGroups = document.getElementById('customerModsGroups');
+const customerSpecialNotes = document.getElementById('customerSpecialNotes');
+const summaryBasePrice = document.getElementById('summaryBasePrice');
+const priceModifiers = document.getElementById('priceModifiers');
+const summaryTotalPrice = document.getElementById('summaryTotalPrice');
 const addGroupBtn = document.getElementById('addGroupBtn');
 const modsGroupsList = document.getElementById('modsGroupsList');
 const adminModsBuilderBtn = document.getElementById('adminModsBuilderBtn');
 const storeModsBuilderBtn = document.getElementById('storeModsBuilderBtn');
 let modsBuilderTargetTextarea = null;
+let currentCustomizingItem = null;
 
 // Utils
 let currentLang = localStorage.getItem('lolivo_lang') || (document.documentElement.lang || 'ar');
@@ -355,6 +368,13 @@ function renderMenu() {
 }
 
 function addToCart(item) {
+  // Open customization modal for customer role
+  if (currentRole === 'customer') {
+    openCustomerCustomize(item);
+    return;
+  }
+  
+  // Direct add for admin/store roles
   const existing = cart.get(item.id);
   if (existing) {
     existing.qty += 1;
@@ -432,7 +452,8 @@ function calcTotals() {
   let total = 0;
   for (const { item, qty } of cart.values()) {
     count += qty;
-    total += item.price * qty;
+    const itemPrice = item.customization ? item.customization.finalPrice : item.price;
+    total += itemPrice * qty;
   }
   return { count, total };
 }
@@ -450,11 +471,32 @@ function updateCartUI() {
 
   cartItemsEl.innerHTML = Array.from(cart.values())
     .map(({ item, qty }) => {
+      const itemName = currentLang === 'ar' ? (item.name || item.name_en) : (item.name_en || item.name);
+      const displayPrice = item.customization ? item.customization.finalPrice : item.price;
+      
+      let customizationDetails = '';
+      if (item.customization) {
+        const breadNames = {
+          white: 'خبز أبيض',
+          brown: 'خبز بني', 
+          ciabatta: 'شاباتا',
+          focaccia: 'فوكاشيا'
+        };
+        
+        customizationDetails = `
+          <div class="customization-details" style="font-size: 12px; color: var(--muted); margin-top: 4px;">
+            <div>نوع الخبز: ${breadNames[item.customization.bread] || item.customization.bread}</div>
+            ${item.customization.specialNotes ? `<div>ملاحظات: ${item.customization.specialNotes}</div>` : ''}
+          </div>
+        `;
+      }
+      
       return `
       <div class="cart-item">
         <div class="meta">
-          <div class="name">${item.name}</div>
-          <div class="muted">${formatPrice(item.price)} × ${qty}</div>
+          <div class="name">${itemName}</div>
+          <div class="muted">${formatPrice(displayPrice)} × ${qty}</div>
+          ${customizationDetails}
         </div>
         <div class="qty">
           <button aria-label="إنقاص" data-action="dec" data-id="${item.id}">−</button>
@@ -504,6 +546,142 @@ function closeCustomize() {
   customizeModal.classList.remove('open');
   customizeModal.setAttribute('aria-hidden', 'true');
   backdrop.hidden = true;
+}
+
+function openCustomerCustomize(item) {
+  currentCustomizingItem = item;
+  customerCustomizeModal.classList.add('open');
+  customerCustomizeModal.setAttribute('aria-hidden', 'false');
+  backdrop.hidden = false;
+  
+  // Fill item info
+  customerItemName.textContent = currentLang === 'ar' ? (item.name || item.name_en) : (item.name_en || item.name);
+  customerItemDesc.textContent = currentLang === 'ar' ? (item.desc || item.desc_en || '') : (item.desc_en || item.desc || '');
+  customerBasePrice.textContent = formatPrice(item.price);
+  summaryBasePrice.textContent = formatPrice(item.price);
+  
+  // Reset form
+  customerSpecialNotes.value = '';
+  document.querySelector('input[name="bread"][value="white"]').checked = true;
+  
+  // Build modifiers UI
+  buildCustomerModifiersUI(item.mods || []);
+  
+  // Update price
+  updateCustomerPrice();
+}
+
+function closeCustomerCustomize() {
+  customerCustomizeModal.classList.remove('open');
+  customerCustomizeModal.setAttribute('aria-hidden', 'true');
+  backdrop.hidden = true;
+  currentCustomizingItem = null;
+}
+
+function buildCustomerModifiersUI(mods) {
+  if (!mods || !mods.length) {
+    customerModsGroups.innerHTML = '<p class="muted">لا توجد خيارات إضافية متاحة</p>';
+    return;
+  }
+  
+  customerModsGroups.innerHTML = mods.map(group => `
+    <div class="modifier-group">
+      <h5>${group.name} ${group.required ? '<span style="color: var(--danger);">*</span>' : ''}</h5>
+      <div class="options-grid">
+        ${group.options.map(option => `
+          <label class="option-item">
+            <input type="${group.type === 'single' ? 'radio' : 'checkbox'}" 
+                   name="mod_${group.id}" 
+                   value="${option.id}" 
+                   data-price="${option.priceDelta || 0}"
+                   ${group.required && group.type === 'single' ? 'required' : ''}>
+            <span>${option.name} ${option.priceDelta ? `(+${formatPrice(option.priceDelta)})` : ''}</span>
+          </label>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateCustomerPrice() {
+  if (!currentCustomizingItem) return;
+  
+  let totalPrice = currentCustomizingItem.price;
+  let modifiers = [];
+  
+  // Calculate modifiers
+  const checkedInputs = customerModsGroups.querySelectorAll('input:checked');
+  checkedInputs.forEach(input => {
+    const priceDelta = parseFloat(input.dataset.price) || 0;
+    if (priceDelta !== 0) {
+      totalPrice += priceDelta;
+      const label = input.closest('label').querySelector('span').textContent;
+      modifiers.push({
+        name: label,
+        price: priceDelta
+      });
+    }
+  });
+  
+  // Update price modifiers display
+  priceModifiers.innerHTML = modifiers.map(mod => `
+    <div class="price-modifier">
+      <span>${mod.name}</span>
+      <span>${mod.price > 0 ? '+' : ''}${formatPrice(mod.price)}</span>
+    </div>
+  `).join('');
+  
+  // Update total
+  summaryTotalPrice.textContent = formatPrice(totalPrice);
+}
+
+function addCustomizedToCart() {
+  if (!currentCustomizingItem) return;
+  
+  // Collect customization data
+  const bread = document.querySelector('input[name="bread"]:checked')?.value || 'white';
+  const specialNotes = customerSpecialNotes.value.trim();
+  
+  // Collect modifiers
+  const modifiers = [];
+  const checkedInputs = customerModsGroups.querySelectorAll('input:checked');
+  checkedInputs.forEach(input => {
+    const groupId = input.name.replace('mod_', '');
+    const optionId = input.value;
+    const priceDelta = parseFloat(input.dataset.price) || 0;
+    
+    modifiers.push({
+      groupId,
+      optionId,
+      priceDelta
+    });
+  });
+  
+  // Calculate final price
+  let finalPrice = currentCustomizingItem.price;
+  modifiers.forEach(mod => finalPrice += mod.priceDelta);
+  
+  // Create customized item
+  const customizedItem = {
+    ...currentCustomizingItem,
+    customization: {
+      bread,
+      modifiers,
+      specialNotes,
+      finalPrice
+    }
+  };
+  
+  // Add to cart
+  const existing = cart.get(currentCustomizingItem.id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.set(currentCustomizingItem.id, { item: customizedItem, qty: 1 });
+  }
+  
+  updateCartUI();
+  closeCustomerCustomize();
 }
 
 function openModsBuilder(targetTextarea) {
@@ -631,7 +809,7 @@ function closeEditItem() {
 // Events
 openCartBtn.addEventListener('click', openCart);
 closeCartBtn.addEventListener('click', closeCart);
-backdrop.addEventListener('click', () => { closeCart(); closeCheckout(); closeEditItem(); closeCustomize(); });
+backdrop.addEventListener('click', () => { closeCart(); closeCheckout(); closeEditItem(); closeCustomize(); closeCustomerCustomize(); });
 
 cartItemsEl.addEventListener('click', (e) => {
   const btn = e.target.closest('button');
@@ -1232,6 +1410,16 @@ if (removeCurrentImageBtn) {
   });
 }
 if (storeAddItemForm) storeAddItemForm.addEventListener('submit', async (e) => { e.preventDefault(); await handleAddItem(storeAddItemForm); });
+
+// Customer customization events
+if (closeCustomerCustomizeBtn) closeCustomerCustomizeBtn.addEventListener('click', closeCustomerCustomize);
+if (cancelCustomerCustomize) cancelCustomerCustomize.addEventListener('click', closeCustomerCustomize);
+if (addToCartCustomized) addToCartCustomized.addEventListener('click', addCustomizedToCart);
+
+// Update price when modifiers change
+if (customerModsGroups) {
+  customerModsGroups.addEventListener('change', updateCustomerPrice);
+}
 
 // Category forms and lists
 const adminAddCategoryForm = document.getElementById('adminAddCategoryForm');

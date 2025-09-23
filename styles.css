@@ -133,4 +133,87 @@ body {
   .cart-drawer { width: 100%; }
 }
 
+/* Customer customization styles */
+.customize-section {
+  margin-bottom: 20px;
+}
+
+.customize-section h4 {
+  margin: 0 0 10px 0;
+  color: var(--text);
+  font-size: 16px;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--subtle);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--card);
+}
+
+.option-item:hover {
+  border-color: var(--brand);
+  background: var(--subtle);
+}
+
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] {
+  margin: 0;
+}
+
+.option-item input:checked + span {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.option-item:has(input:checked) {
+  border-color: var(--brand);
+  background: var(--subtle);
+}
+
+.price-display {
+  margin-top: 10px;
+  padding: 10px;
+  background: var(--card);
+  border-radius: 6px;
+  border: 1px solid var(--subtle);
+}
+
+.price-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.price-line.total {
+  border-top: 1px solid var(--subtle);
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.price-modifiers {
+  margin: 10px 0;
+}
+
+.price-modifier {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
 
