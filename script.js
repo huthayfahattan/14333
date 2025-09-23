@@ -1062,6 +1062,7 @@ function renderItemsList() {
     if (!overrides.length) { el.innerHTML = '<span class="muted">لا توجد أصناف مضافة</span>'; return; }
     el.innerHTML = overrides.map(({ item }) => `
       <button class="chip" data-edit-id="${item.id}">تعديل «${item.name}»</button>
+      <button class="chip" data-edit-image-id="${item.id}" style="background: var(--gold); color: white;">📷 تعديل الصورة</button>
       <button class="chip" data-del-id="${item.id}">حذف</button>
     `).join('');
   };
@@ -1072,6 +1073,7 @@ function bindItemsActions(container) {
   if (!container) return;
   container.addEventListener('click', async (e) => {
     const editBtn = e.target.closest('button[data-edit-id]');
+    const editImageBtn = e.target.closest('button[data-edit-image-id]');
     const delBtn = e.target.closest('button[data-del-id]');
     if (editBtn) {
       const id = editBtn.getAttribute('data-edit-id');
@@ -1087,6 +1089,17 @@ function bindItemsActions(container) {
       editItemForm.elements['price'].value = entry.item.price || 0;
       editItemForm.elements['image'].value = '';
       editItemForm.elements['mods'].value = entry.item.mods ? JSON.stringify(entry.item.mods) : '';
+      
+      // show current image preview
+      const currentImagePreview = document.getElementById('currentImagePreview');
+      const currentImage = document.getElementById('currentImage');
+      if (entry.item.image) {
+        currentImage.src = entry.item.image;
+        currentImagePreview.style.display = 'block';
+      } else {
+        currentImagePreview.style.display = 'none';
+      }
+      
       // preview existing image
       if (editImagePreview) {
         if (entry.item.image) {
@@ -1097,6 +1110,46 @@ function bindItemsActions(container) {
         }
       }
       if (removeImageCheckbox) removeImageCheckbox.checked = false;
+      openEditItem();
+    }
+    if (editImageBtn) {
+      const id = editImageBtn.getAttribute('data-edit-image-id');
+      const overrides = JSON.parse(localStorage.getItem('lolivo_menu_overrides_v1')||'[]');
+      const entry = overrides.find(x => x.item.id === id);
+      if (!entry) return;
+      
+      // Fill form with minimal data for image editing only
+      editItemForm.elements['id'].value = id;
+      editItemForm.elements['name'].value = entry.item.name || '';
+      editItemForm.elements['name_en'].value = entry.item.name_en || '';
+      editItemForm.elements['desc'].value = entry.item.desc || '';
+      editItemForm.elements['desc_en'].value = entry.item.desc_en || '';
+      editItemForm.elements['price'].value = entry.item.price || 0;
+      editItemForm.elements['image'].value = '';
+      editItemForm.elements['mods'].value = entry.item.mods ? JSON.stringify(entry.item.mods) : '';
+      
+      // Show current image preview
+      const currentImagePreview = document.getElementById('currentImagePreview');
+      const currentImage = document.getElementById('currentImage');
+      if (entry.item.image) {
+        currentImage.src = entry.item.image;
+        currentImagePreview.style.display = 'block';
+      } else {
+        currentImagePreview.style.display = 'none';
+      }
+      
+      // Hide edit image preview initially
+      if (editImagePreview) {
+        editImagePreview.style.display = 'none';
+      }
+      if (removeImageCheckbox) removeImageCheckbox.checked = false;
+      
+      // Focus on image section
+      setTimeout(() => {
+        const imageInput = editItemForm.querySelector('input[name="image"]');
+        if (imageInput) imageInput.focus();
+      }, 100);
+      
       openEditItem();
     }
     if (delBtn) {
@@ -1151,6 +1204,32 @@ if (editItemForm) {
       editImagePreview.style.display = 'block';
     });
   }
+}
+
+// remove current image button
+const removeCurrentImageBtn = document.getElementById('removeCurrentImage');
+if (removeCurrentImageBtn) {
+  removeCurrentImageBtn.addEventListener('click', () => {
+    const currentImagePreview = document.getElementById('currentImagePreview');
+    const currentImage = document.getElementById('currentImage');
+    const editImagePreview = document.getElementById('editImagePreview');
+    
+    // Hide current image preview
+    currentImagePreview.style.display = 'none';
+    currentImage.src = '';
+    
+    // Hide edit image preview
+    if (editImagePreview) {
+      editImagePreview.style.display = 'none';
+    }
+    
+    // Clear file input
+    const fileInput = editItemForm.querySelector('input[name="image"]');
+    if (fileInput) fileInput.value = '';
+    
+    // Mark for removal
+    if (removeImageCheckbox) removeImageCheckbox.checked = true;
+  });
 }
 if (storeAddItemForm) storeAddItemForm.addEventListener('submit', async (e) => { e.preventDefault(); await handleAddItem(storeAddItemForm); });
 

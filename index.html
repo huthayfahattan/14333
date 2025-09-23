@@ -295,6 +295,13 @@
           <label>السعر
             <input type="number" name="price" step="0.01" min="0" required />
           </label>
+          <div id="currentImagePreview" style="margin: 10px 0; display: none;">
+            <label>الصورة الحالية:</label>
+            <div style="position: relative; display: inline-block;">
+              <img id="currentImage" style="max-width: 200px; max-height: 150px; border-radius: 8px; border: 2px solid var(--subtle);" />
+              <button type="button" id="removeCurrentImage" style="position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 12px;">×</button>
+            </div>
+          </div>
           <label>صورة جديدة (اختياري)
             <input type="file" name="image" accept="image/*" />
           </label>
