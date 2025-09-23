@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لوليفو | قائمة الطعام و الطلب</title>
-    <meta name="description" content="مطعم لوليفو - اطلب السندويتشات والسلطات والبوكسات والمشروبات" />
+    <title>L'olivo | Food Menu & Ordering</title>
+    <meta name="description" content="L'olivo Restaurant - Order sandwiches, salads, boxes and beverages" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -15,30 +15,25 @@
       <div class="brand">
         <div class="logo" aria-hidden="true">🍃</div>
         <div>
-          <h1>لوليفو</h1>
-          <p class="subtitle">مطعم ساندويتشات ومشاوي بطابع إيطالي</p>
+          <h1>L'olivo</h1>
+          <p class="subtitle">Italian-style sandwiches and grilled specialties</p>
         </div>
       </div>
       <nav class="category-nav" id="categoryNav"></nav>
       <div class="header-actions">
-        <button id="supportBtn" class="support-btn" aria-label="الدعم الفني" title="الدعم الفني">
+        <button id="supportBtn" class="support-btn" aria-label="Customer Support" title="Customer Support">
           💬
         </button>
         <div class="role-switcher">
-          <label for="roleSelect" class="sr-only">الدور</label>
-          <select id="roleSelect" title="اختيار الدور">
-            <option value="customer">عميل</option>
-            <option value="store">المطعم</option>
-            <option value="admin">المالك</option>
-          </select>
-          <label for="langSelect" class="sr-only">اللغة</label>
-          <select id="langSelect" title="Language">
-            <option value="ar">العربية</option>
-            <option value="en">English</option>
+          <label for="roleSelect" class="sr-only">Role</label>
+          <select id="roleSelect" title="Select Role">
+            <option value="customer">Customer</option>
+            <option value="store">Restaurant</option>
+            <option value="admin">Owner</option>
           </select>
         </div>
       </div>
-      <button class="cart-button" id="openCartBtn" aria-label="فتح السلة">
+      <button class="cart-button" id="openCartBtn" aria-label="Open Cart">
         🛒 <span id="cartCount">0</span>
       </button>
     </header>

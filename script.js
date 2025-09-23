@@ -2,76 +2,76 @@
 const defaultMenu = [
   {
     id: 'sandwiches-signature',
-    title: '🥪 سندويتشات مميزة',
-    description: 'اختيار من أفضل السندويتشات بطابع لوليفو',
+    title: '🥪 Signature Sandwiches',
+    description: 'Selection of the finest L\'olivo signature sandwiches',
     items: [
-      { id: 'special-sandwich', name: "L'olivo Special Sandwich", desc: 'جبنة إمنتال & شيدر، خرشوف، أوريغانو، صوص خاص', price: 27.6, image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.8, deliveryTime: '15-20 دقيقة' },
-      { id: 'cheese-club', name: 'Cheese Club Sandwich', desc: 'بارميزان & إمنتال، طماطم، أوريغانو + صوص', price: 33.35, image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '12-18 دقيقة' },
-      { id: 'roast-beef', name: 'Roast Beef Sandwich', desc: 'روست بيف مدخن، إمنتال، خردل، أوريغانو + صوص', price: 32.2, image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center', rating: 4.7, deliveryTime: '15-20 دقيقة' },
-      { id: 'italian-tuna', name: 'Italian Tuna Sandwich', desc: 'تونة إيطالية، إمنتال، طماطم، أوريغانو + صوص', price: 39.1, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '10-15 دقيقة' },
-      { id: 'mozzarella-bufala', name: 'Mozzarella Bufala Sandwich', desc: 'موزاريلا بوفالا، طماطم، أوريغانو، بيستو، خبز شاباتا زيتون', price: 33.35, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.9, deliveryTime: '18-25 دقيقة' },
-      { id: 'turkey-royal', name: 'Turkey Royal', desc: 'ديك رومي مدخن، إمنتال، طماطم، أوريغانو + صوص', price: 51.75, image: 'https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&h=300&fit=crop&crop=center', rating: 4.8, deliveryTime: '20-25 دقيقة' },
+      { id: 'special-sandwich', name: "L'olivo Special Sandwich", desc: 'Emmental & Cheddar cheese, artichoke, oregano, special sauce', price: 27.6, image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.8, deliveryTime: '15-20 min' },
+      { id: 'cheese-club', name: 'Cheese Club Sandwich', desc: 'Parmesan & Emmental, tomatoes, oregano + sauce', price: 33.35, image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '12-18 min' },
+      { id: 'roast-beef', name: 'Roast Beef Sandwich', desc: 'Smoked roast beef, emmental, mustard, oregano + sauce', price: 32.2, image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center', rating: 4.7, deliveryTime: '15-20 min' },
+      { id: 'italian-tuna', name: 'Italian Tuna Sandwich', desc: 'Italian tuna, emmental, tomatoes, oregano + sauce', price: 39.1, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '10-15 min' },
+      { id: 'mozzarella-bufala', name: 'Mozzarella Bufala Sandwich', desc: 'Mozzarella bufala, tomatoes, oregano, pesto, olive ciabatta bread', price: 33.35, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.9, deliveryTime: '18-25 min' },
+      { id: 'turkey-royal', name: 'Turkey Royal', desc: 'Smoked turkey, emmental, tomatoes, oregano + sauce', price: 51.75, image: 'https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&h=300&fit=crop&crop=center', rating: 4.8, deliveryTime: '20-25 min' },
     ],
   },
   {
     id: 'gathering-boxes',
-    title: '🎁 بوكسات الجمعات',
-    description: 'خيارات متنوعة للحفلات والجمعات',
+    title: '🎁 Party Boxes',
+    description: 'Variety of options for parties and gatherings',
     items: [
-      { id: 'make-your-box', name: 'اصنع بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
-      { id: 'mini-bites', name: 'لوليفو ميني بايت بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
-      { id: 'small-focaccia', name: 'بوكس فوكاشيا صغير', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
-      { id: 'pretzel-box', name: 'بوكس البريتزل', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
-      { id: 'croissant-box', name: 'كرواسون بوكس', desc: 'جميع أنواع السندويتشات المميزة الستة', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'make-your-box', name: 'Make Your Box', desc: 'All six signature sandwich varieties', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'mini-bites', name: 'L\'olivo Mini Bites Box', desc: 'All six signature sandwich varieties', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'small-focaccia', name: 'Small Focaccia Box', desc: 'All six signature sandwich varieties', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'pretzel-box', name: 'Pretzel Box', desc: 'All six signature sandwich varieties', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
+      { id: 'croissant-box', name: 'Croissant Box', desc: 'All six signature sandwich varieties', price: 198.95, image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
     id: 'grilled-meat',
-    title: '🥩 سندويتشات مشوية وأطباق اللحوم',
-    description: 'مشويات لذيذة وطرية',
+    title: '🥩 Grilled Sandwiches & Meat Dishes',
+    description: 'Delicious and tender grilled specialties',
     items: [
-      { id: 'grilled-chicken-pesto', name: 'دجاج مشوي بيستو', price: 36, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=300&fit=crop&crop=center', rating: 4.7, deliveryTime: '20-25 دقيقة' },
-      { id: 'grilled-halloumi-pesto', name: 'حلومي بيستو مشوي', price: 34, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '15-20 دقيقة' },
-      { id: 'manzo-tenderloin', name: 'لحم مانزو تندرلوين متبّل', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.9, deliveryTime: '25-30 دقيقة' },
-      { id: 'truffle-steak', name: 'ترفل ستيك', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.8, deliveryTime: '25-30 دقيقة' },
-      { id: 'steak-frites', name: 'ستيك فريتس', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '25-30 دقيقة' },
+      { id: 'grilled-chicken-pesto', name: 'Grilled Chicken Pesto', price: 36, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=300&fit=crop&crop=center', rating: 4.7, deliveryTime: '20-25 min' },
+      { id: 'grilled-halloumi-pesto', name: 'Grilled Halloumi Pesto', price: 34, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '15-20 min' },
+      { id: 'manzo-tenderloin', name: 'Marinated Manzo Tenderloin', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.9, deliveryTime: '25-30 min' },
+      { id: 'truffle-steak', name: 'Truffle Steak', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.8, deliveryTime: '25-30 min' },
+      { id: 'steak-frites', name: 'Steak Frites', price: 49.45, image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '25-30 min' },
     ],
   },
   {
     id: 'salads',
-    title: '🥗 سلطات (Salads)',
-    description: 'سلطات طازجة ومتوازنة',
+    title: '🥗 Salads',
+    description: 'Fresh and balanced salads',
     items: [
-      { id: 'lolivo-salad', name: 'سلطة لوليفو', desc: 'خس عضوي، جرجير، طماطم كرزية، بارميزان، أوريغانو، خل بلسميك', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '8-12 دقيقة' },
-      { id: 'caesar-chicken', name: 'سلطة دجاج سيزر', desc: 'دجاج متبل، خس، خبز محمّص، بارميزان، صوص سيزر', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '10-15 دقيقة' },
-      { id: 'chicken-feta', name: 'سلطة دجاج و فيتا', desc: 'دجاج متبل، خس، فيتا، طماطم كرزية، زيت زيتون بالليمون', price: 29, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.4, deliveryTime: '8-12 دقيقة' },
+      { id: 'lolivo-salad', name: 'L\'olivo Salad', desc: 'Organic lettuce, arugula, cherry tomatoes, parmesan, oregano, balsamic vinegar', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '8-12 min' },
+      { id: 'caesar-chicken', name: 'Chicken Caesar Salad', desc: 'Marinated chicken, lettuce, croutons, parmesan, caesar dressing', price: 32, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '10-15 min' },
+      { id: 'chicken-feta', name: 'Chicken & Feta Salad', desc: 'Marinated chicken, lettuce, feta cheese, cherry tomatoes, lemon olive oil', price: 29, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop&crop=center', rating: 4.4, deliveryTime: '8-12 min' },
     ],
   },
   {
     id: 'sides',
-    title: '🧀 أطباق جانبية مشهورة',
-    description: 'مشاركات وللقعدة',
+    title: '🧀 Popular Side Dishes',
+    description: 'Sharing plates and appetizers',
     items: [
-      { id: 'big-cheese-platter', name: 'طبق جبن كبير', price: 259, image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=300&fit=crop&crop=center' },
+      { id: 'big-cheese-platter', name: 'Big Cheese Platter', price: 259, image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
     id: 'fries',
-    title: '🍟 شرائح البطاطس',
-    description: 'مقرمشة وساخنة',
+    title: '🍟 French Fries',
+    description: 'Crispy and hot',
     items: [
-      { id: 'truffle-fries', name: 'شرائح البطاطس مع الترافل', price: 18, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&h=300&fit=crop&crop=center' },
-      { id: 'salt-pepper-fries', name: 'شرائح البطاطس مع الفلفل والملح', price: 17, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&h=300&fit=crop&crop=center' },
+      { id: 'truffle-fries', name: 'Truffle Fries', price: 18, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&h=300&fit=crop&crop=center' },
+      { id: 'salt-pepper-fries', name: 'Salt & Pepper Fries', price: 17, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&h=300&fit=crop&crop=center' },
     ],
   },
   {
     id: 'drinks',
-    title: '🥤 المشروبات',
-    description: 'منعشة وطبيعية',
+    title: '🥤 Beverages',
+    description: 'Refreshing and natural',
     items: [
-      { id: 'soda', name: 'مشروب غازي', desc: 'كوكا كولا، سبرايت، وغيرها', price: 5, image: 'https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=400&h=300&fit=crop&crop=center' },
-      { id: 'mango-strawberry-juice', name: 'عصير مانجو طازج / فراولة', price: 12, image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop&crop=center' },
-      { id: 'orange-juice', name: 'عصير برتقال طبيعي', price: 12, image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop&crop=center' },
+      { id: 'soda', name: 'Soft Drinks', desc: 'Coca Cola, Sprite, and more', price: 5, image: 'https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=400&h=300&fit=crop&crop=center' },
+      { id: 'mango-strawberry-juice', name: 'Fresh Mango / Strawberry Juice', price: 12, image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop&crop=center' },
+      { id: 'orange-juice', name: 'Fresh Orange Juice', price: 12, image: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop&crop=center' },
     ],
   },
 ];
@@ -211,17 +211,8 @@ let modsBuilderTargetTextarea = null;
 let currentCustomizingItem = null;
 
 // Utils
-let currentLang = localStorage.getItem('lolivo_lang') || (document.documentElement.lang || 'ar');
+let currentLang = 'en';
 const t = {
-  ar: {
-    allCategories: 'كل الفئات', searchPlaceholder: 'ابحث عن صنف...', sort: 'ترتيب',
-    noCart: 'السلة فارغة', invoice: 'عرض الفاتورة', trackTitle: 'تتبّع طلبك / إعادة طباعة الفاتورة',
-    trackSubtitle: 'أدخل رقم الطلب لعرض الفاتورة', recentTitle: 'آخر الطلبات', filterTitle: 'تصفية القائمة',
-    filterSubtitle: 'اختيار فئة أو البحث بالاسم', copyLink: 'نسخ رابط التصفية', clearFilters: 'مسح الفلاتر',
-    priceAsc: 'السعر: من الأقل للأعلى', priceDesc: 'السعر: من الأعلى للأقل', nameAsc: 'الاسم: أ → ي', nameDesc: 'الاسم: ي → أ',
-    total: 'الإجمالي', orderNum: 'رقم الطلب', print: 'طباعة / حفظ PDF', notFound: 'لم يتم العثور على الطلب', enterId: 'الرجاء إدخال رقم الطلب',
-    addedItem: 'تمت إضافة الصنف بنجاح', needNamePrice: 'يرجى إدخال اسم وسعر صحيح'
-  },
   en: {
     allCategories: 'All categories', searchPlaceholder: 'Search item...', sort: 'Sort',
     noCart: 'Cart is empty', invoice: 'Show invoice', trackTitle: 'Track your order / Reprint invoice',
@@ -232,8 +223,8 @@ const t = {
     addedItem: 'Item added successfully', needNamePrice: 'Please enter valid name and price'
   }
 };
-const formatPrice = (num) => currentLang === 'ar' ? `${num.toFixed(2)} ر.س` : `${num.toFixed(2)} SAR`;
-const saLocaleDateTime = (iso) => new Date(iso).toLocaleString(currentLang === 'ar' ? 'ar-SA' : 'en-US');
+const formatPrice = (num) => `$${num.toFixed(2)}`;
+const saLocaleDateTime = (iso) => new Date(iso).toLocaleString('en-US');
 
 // Orders service using localStorage for cross-tab sync
 const OrdersService = (() => {
