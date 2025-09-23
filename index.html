@@ -42,29 +42,6 @@
       <!-- واجهة العميل -->
       <section id="customerView">
 
-        <div class="category-section">
-          <div class="category-header">
-            <h3 class="category-title" id="filterTitle">تصفية القائمة</h3>
-            <p class="category-desc" id="filterSubtitle">اختيار فئة أو البحث بالاسم</p>
-          </div>
-          <div class="items-grid" style="align-items:center;">
-            <div class="card" style="display:flex; gap:10px; align-items:center; grid-column:1/-1;">
-              <select id="filterCategory" style="padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);">
-                <option value="all">كل الفئات</option>
-              </select>
-              <input id="filterSearch" placeholder="ابحث عن صنف..." style="flex:1; min-width:200px; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);" />
-              <select id="filterSort" title="ترتيب" style="padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);">
-                <option value="none">بدون ترتيب</option>
-                <option value="price-asc">السعر: من الأقل للأعلى</option>
-                <option value="price-desc">السعر: من الأعلى للأقل</option>
-                <option value="name-asc">الاسم: أ → ي</option>
-                <option value="name-desc">الاسم: ي → أ</option>
-              </select>
-              <button id="clearFilters" class="secondary-btn">مسح الفلاتر</button>
-              <button id="copyFilterLink" class="primary-btn">نسخ رابط التصفية</button>
-            </div>
-          </div>
-        </div>
 
         <section id="menuContainer" class="menu-container" aria-live="polite"></section>
       </section>

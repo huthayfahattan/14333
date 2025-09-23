@@ -160,11 +160,6 @@ const checkoutForm = document.getElementById('checkoutForm');
 const yearEl = document.getElementById('year');
 const muteToggle = document.getElementById('muteToggle');
 const testRingtoneBtn = document.getElementById('testRingtone');
-const filterCategory = document.getElementById('filterCategory');
-const filterSearch = document.getElementById('filterSearch');
-const filterSort = document.getElementById('filterSort');
-const clearFiltersBtn = document.getElementById('clearFilters');
-const copyFilterLinkBtn = document.getElementById('copyFilterLink');
 const editItemModal = document.getElementById('editItemModal');
 const editItemForm = document.getElementById('editItemForm');
 const closeEditItemBtn = document.getElementById('closeEditItemBtn');
@@ -211,10 +206,7 @@ let currentCustomizingItem = null;
 let currentLang = 'en';
 const t = {
   en: {
-    allCategories: 'All categories', searchPlaceholder: 'Search item...', sort: 'Sort',
-    noCart: 'Cart is empty', invoice: 'Show invoice',     filterTitle: 'Filter menu',
-    filterSubtitle: 'Pick a category or search by name', copyLink: 'Copy filter link', clearFilters: 'Clear filters',
-    priceAsc: 'Price: Low to High', priceDesc: 'Price: High to Low', nameAsc: 'Name: A → Z', nameDesc: 'Name: Z → A',
+    noCart: 'Cart is empty', invoice: 'Show invoice',
     total: 'Total', orderNum: 'Order #', print: 'Print / Save PDF',
     addedItem: 'Item added successfully', needNamePrice: 'Please enter valid name and price'
   }
@@ -279,45 +271,7 @@ function renderCategoryNav() {
 // Render menu
 function renderMenu() {
   menu = MenuService.getMenu();
-  // populate filter categories if present
-  if (filterCategory) {
-    const current = filterCategory.value || 'all';
-    const options = [`<option value="all">${t[currentLang].allCategories}</option>`]
-      .concat(menu.map(c => `<option value="${c.id}">${currentLang === 'ar' ? (c.title || c.title_en || '') : (c.title_en || c.title || '')}</option>`))
-      .join('');
-    if (filterCategory.innerHTML !== options) filterCategory.innerHTML = options;
-    filterCategory.value = current;
-  }
-  // apply filtering
-  const query = (filterSearch?.value || '').toLowerCase().trim();
-  const cat = filterCategory?.value || 'all';
-  let filteredCats = menu
-    .filter(c => cat === 'all' || c.id === cat)
-    .map(c => ({
-      ...c,
-      items: (c.items || []).filter(i => {
-        if (!query) return true;
-        const hay = `${i.name} ${i.desc || ''}`.toLowerCase();
-        return hay.includes(query);
-      })
-    }))
-    .filter(c => (c.items || []).length > 0);
-
-  // sorting by price
-  const sort = filterSort?.value || 'none';
-  if (sort !== 'none') {
-    let compare;
-    if (sort === 'price-asc') compare = (a, b) => a.price - b.price;
-    else if (sort === 'price-desc') compare = (a, b) => b.price - a.price;
-    else if (sort === 'name-asc') compare = (a, b) => a.name.localeCompare(b.name, 'ar');
-    else if (sort === 'name-desc') compare = (a, b) => b.name.localeCompare(a.name, 'ar');
-    if (compare) {
-      filteredCats = filteredCats.map(c => ({
-        ...c,
-        items: [...c.items].sort(compare)
-      }));
-    }
-  }
+  let filteredCats = menu;
 
   menuContainer.innerHTML = filteredCats
     .map((cat) => {
@@ -977,26 +931,6 @@ updateCartUI();
 yearEl.textContent = new Date().getFullYear();
 
 // ---------- Filter state in URL ----------
-function readFilterFromURL() {
-  const url = new URL(window.location.href);
-  const fc = url.searchParams.get('fc');
-  const fq = url.searchParams.get('fq');
-  const fs = url.searchParams.get('fs');
-  if (filterCategory && fc) filterCategory.value = fc;
-  if (filterSearch && fq) filterSearch.value = fq;
-  if (filterSort && fs) filterSort.value = fs;
-}
-function writeFilterToURL() {
-  const url = new URL(window.location.href);
-  if (filterCategory) url.searchParams.set('fc', filterCategory.value || 'all');
-  if (filterSearch) {
-    const q = (filterSearch.value || '').trim();
-    if (q) url.searchParams.set('fq', q); else url.searchParams.delete('fq');
-  }
-  if (filterSort) url.searchParams.set('fs', filterSort.value || 'none');
-  history.replaceState({}, '', url);
-}
-readFilterFromURL();
 renderMenu();
 
 // ---------- Role routing ----------
@@ -1173,26 +1107,6 @@ if (testRingtoneBtn) {
   testRingtoneBtn.addEventListener('click', () => playNewOrderSound());
 }
 
-// Filter events
-function onFilterChanged() { writeFilterToURL(); renderMenu(); }
-if (filterCategory) filterCategory.addEventListener('change', onFilterChanged);
-if (filterSearch) filterSearch.addEventListener('input', onFilterChanged);
-if (filterSort) filterSort.addEventListener('change', onFilterChanged);
-if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', () => {
-  if (filterCategory) filterCategory.value = 'all';
-  if (filterSearch) filterSearch.value = '';
-  if (filterSort) filterSort.value = 'none';
-  onFilterChanged();
-});
-if (copyFilterLinkBtn) copyFilterLinkBtn.addEventListener('click', async () => {
-  writeFilterToURL();
-  try {
-    await navigator.clipboard.writeText(window.location.href);
-    alert('تم نسخ الرابط مع الفلاتر');
-  } catch {
-    alert('تعذر النسخ تلقائيًا، انسخ الرابط من شريط العنوان');
-  }
-});
 
 // ---------- Recent orders ----------
 function getRecent() {
@@ -1253,31 +1167,6 @@ function applyLanguage(lang) {
   localStorage.setItem('lolivo_lang', lang);
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-  // static texts
-  const trackTitle = document.getElementById('trackTitle');
-  const trackSubtitle = document.getElementById('trackSubtitle');
-  const recentTitle = document.getElementById('recentTitle');
-  const filterTitle = document.getElementById('filterTitle');
-  const filterSubtitle = document.getElementById('filterSubtitle');
-  const filterSearch = document.getElementById('filterSearch');
-  const filterSort = document.getElementById('filterSort');
-  const clearFiltersBtn = document.getElementById('clearFilters');
-  const copyFilterLinkBtn = document.getElementById('copyFilterLink');
-  if (trackTitle) trackTitle.textContent = t[lang].trackTitle;
-  if (trackSubtitle) trackSubtitle.textContent = t[lang].trackSubtitle;
-  if (recentTitle) recentTitle.textContent = t[lang].recentTitle;
-  if (filterTitle) filterTitle.textContent = t[lang].filterTitle;
-  if (filterSubtitle) filterSubtitle.textContent = t[lang].filterSubtitle;
-  if (filterSearch) filterSearch.placeholder = t[lang].searchPlaceholder;
-  if (filterSort) {
-    filterSort.options[0].textContent = lang === 'ar' ? 'بدون ترتيب' : 'No sorting';
-    filterSort.options[1].textContent = t[lang].priceAsc;
-    filterSort.options[2].textContent = t[lang].priceDesc;
-    filterSort.options[3].textContent = t[lang].nameAsc;
-    filterSort.options[4].textContent = t[lang].nameDesc;
-  }
-  if (clearFiltersBtn) clearFiltersBtn.textContent = t[lang].clearFilters;
-  if (copyFilterLinkBtn) copyFilterLinkBtn.textContent = t[lang].copyLink;
   // re-render menu to refresh category dropdown text
   renderMenu();
 }
