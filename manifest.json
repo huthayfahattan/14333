@@ -1,15 +1,15 @@
 {
-  "name": "لوليفو - مطعم الطعام",
-  "short_name": "لوليفو",
-  "description": "مطعم لوليفو - اطلب السندويتشات والسلطات والبوكسات والمشروبات",
+  "name": "L'olivo - Food Restaurant",
+  "short_name": "L'olivo",
+  "description": "L'olivo Restaurant - Order sandwiches, salads, boxes and beverages",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#dc3545",
   "orientation": "portrait-primary",
   "scope": "/",
-  "lang": "ar",
-  "dir": "rtl",
+  "lang": "en",
+  "dir": "ltr",
   "categories": ["food", "restaurant", "shopping"],
   "version": "1.0.0",
   "package_name": "com.lolivo.restaurant",
@@ -155,9 +155,9 @@
   ],
   "shortcuts": [
     {
-      "name": "عرض القائمة",
-      "short_name": "القائمة",
-      "description": "عرض قائمة الطعام الكاملة",
+      "name": "View Menu",
+      "short_name": "Menu",
+      "description": "View complete food menu",
       "url": "/?role=customer",
       "icons": [
         {
@@ -167,9 +167,9 @@
       ]
     },
     {
-      "name": "إدارة الطلبات",
-      "short_name": "الطلبات",
-      "description": "إدارة طلبات المطعم",
+      "name": "Manage Orders",
+      "short_name": "Orders",
+      "description": "Manage restaurant orders",
       "url": "/?role=store",
       "icons": [
         {
@@ -179,9 +179,9 @@
       ]
     },
     {
-      "name": "لوحة التحكم",
-      "short_name": "الإدارة",
-      "description": "لوحة تحكم المالك",
+      "name": "Admin Dashboard",
+      "short_name": "Admin",
+      "description": "Owner control panel",
       "url": "/?role=admin",
       "icons": [
         {

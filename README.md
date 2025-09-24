@@ -1,4 +1,4 @@
-# لوليفو - تطبيق طلب الطعام
+# L'olivo - Food Ordering App
 
 ## 📱 Android Package Information
 

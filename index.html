@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لوليفو | قائمة الطعام و الطلب</title>
-    <meta name="description" content="مطعم لوليفو - اطلب السندويتشات والسلطات والبوكسات والمشروبات" />
+    <title>L'olivo | Food Menu & Ordering</title>
+    <meta name="description" content="L'olivo Restaurant - Order sandwiches, salads, boxes and beverages" />
     
     <!-- PWA Configuration -->
     <meta name="theme-color" content="#dc3545" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="لوليفو" />
+    <meta name="apple-mobile-web-app-title" content="L'olivo" />
     
     <!-- Android Package Name -->
-    <meta name="application-name" content="لوليفو" />
+    <meta name="application-name" content="L'olivo" />
     <meta name="msapplication-TileColor" content="#dc3545" />
     <meta name="msapplication-config" content="/browserconfig.xml" />
     
@@ -23,7 +23,7 @@
     <meta name="business-registration" content="1010123456" />
     <meta name="tax-id" content="300123456789003" />
     <meta name="commercial-license" content="4030123456789" />
-    <meta name="company-name" content="لوليفو للخدمات الغذائية" />
+    <meta name="company-name" content="L'olivo Food Services LLC" />
     <meta name="legal-name" content="L'olivo Food Services LLC" />
     
     <!-- Manifest -->
@@ -70,54 +70,54 @@
   </head>
   <body>
     <header class="app-header">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">🍃</div>
-        <div>
-          <h1>لوليفو</h1>
-          <p class="subtitle">مطعم ساندويتشات ومشاوي بطابع إيطالي</p>
+        <div class="brand">
+          <div class="logo" aria-hidden="true">🍃</div>
+          <div>
+            <h1>L'olivo</h1>
+            <p class="subtitle">Italian-style sandwiches and grilled specialties</p>
+          </div>
         </div>
-      </div>
-      <nav class="category-nav" id="categoryNav"></nav>
-      <div class="header-actions">
-        <button id="supportBtn" class="support-btn" aria-label="الدعم الفني" title="الدعم الفني">
-          💬
+        <nav class="category-nav" id="categoryNav"></nav>
+        <div class="header-actions">
+          <button id="supportBtn" class="support-btn" aria-label="Customer Support" title="Customer Support">
+            💬
+          </button>
+          <div class="role-switcher">
+            <label for="roleSelect" class="sr-only">Role</label>
+            <select id="roleSelect" title="Select Role">
+              <option value="customer">Customer</option>
+              <option value="store">Restaurant</option>
+              <option value="admin">Owner</option>
+            </select>
+            <label for="langSelect" class="sr-only">Language</label>
+            <select id="langSelect" title="Language">
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+        </div>
+        <button class="cart-button" id="openCartBtn" aria-label="Open Cart">
+          🛒 <span id="cartCount">0</span>
         </button>
-        <div class="role-switcher">
-          <label for="roleSelect" class="sr-only">الدور</label>
-          <select id="roleSelect" title="اختيار الدور">
-            <option value="customer">عميل</option>
-            <option value="store">المطعم</option>
-            <option value="admin">المالك</option>
-          </select>
-          <label for="langSelect" class="sr-only">اللغة</label>
-          <select id="langSelect" title="Language">
-            <option value="ar">العربية</option>
-            <option value="en">English</option>
-          </select>
-        </div>
-      </div>
-      <button class="cart-button" id="openCartBtn" aria-label="فتح السلة">
-        🛒 <span id="cartCount">0</span>
-      </button>
     </header>
 
     <main class="content">
-      <!-- واجهة العميل -->
+      <!-- Customer Interface -->
       <section id="customerView">
         <div class="category-section">
           <div class="category-header">
-            <h3 class="category-title" id="trackTitle">تتبّع طلبك / إعادة طباعة الفاتورة</h3>
-            <p class="category-desc" id="trackSubtitle">أدخل رقم الطلب لعرض الفاتورة</p>
+            <h3 class="category-title" id="trackTitle">Track your order / Reprint invoice</h3>
+            <p class="category-desc" id="trackSubtitle">Enter order ID to view invoice</p>
           </div>
           <div class="items-grid">
             <div class="card" style="grid-column: 1/-1;">
               <div class="actions" style="gap: 12px;">
-                <input id="trackInput" placeholder="مثال: ord_ab12cd" style="flex:1; min-width: 220px; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);" />
-                <button id="trackBtn" class="secondary-btn">عرض الفاتورة</button>
+                <input id="trackInput" placeholder="Example: ord_ab12cd" style="flex:1; min-width: 220px; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);" />
+                <button id="trackBtn" class="secondary-btn">View Invoice</button>
               </div>
             </div>
             <div class="card" style="grid-column: 1/-1;">
-              <h4 style="margin:0 0 8px;" id="recentTitle">آخر الطلبات</h4>
+              <h4 style="margin:0 0 8px;" id="recentTitle">Recent orders</h4>
               <div id="recentOrders" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
             </div>
           </div>
@@ -125,24 +125,24 @@
 
         <div class="category-section">
           <div class="category-header">
-            <h3 class="category-title" id="filterTitle">تصفية القائمة</h3>
-            <p class="category-desc" id="filterSubtitle">اختيار فئة أو البحث بالاسم</p>
+            <h3 class="category-title" id="filterTitle">Filter menu</h3>
+            <p class="category-desc" id="filterSubtitle">Pick a category or search by name</p>
           </div>
           <div class="items-grid" style="align-items:center;">
             <div class="card" style="display:flex; gap:10px; align-items:center; grid-column:1/-1;">
               <select id="filterCategory" style="padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);">
-                <option value="all">كل الفئات</option>
+                <option value="all">All categories</option>
               </select>
-              <input id="filterSearch" placeholder="ابحث عن صنف..." style="flex:1; min-width:200px; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);" />
-              <select id="filterSort" title="ترتيب" style="padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);">
-                <option value="none">بدون ترتيب</option>
-                <option value="price-asc">السعر: من الأقل للأعلى</option>
-                <option value="price-desc">السعر: من الأعلى للأقل</option>
-                <option value="name-asc">الاسم: أ → ي</option>
-                <option value="name-desc">الاسم: ي → أ</option>
+              <input id="filterSearch" placeholder="Search item..." style="flex:1; min-width:200px; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);" />
+              <select id="filterSort" title="Sort" style="padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background: var(--subtle); color: var(--text);">
+                <option value="none">No sorting</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name-asc">Name: A → Z</option>
+                <option value="name-desc">Name: Z → A</option>
               </select>
-              <button id="clearFilters" class="secondary-btn">مسح الفلاتر</button>
-              <button id="copyFilterLink" class="primary-btn">نسخ رابط التصفية</button>
+              <button id="clearFilters" class="secondary-btn">Clear filters</button>
+              <button id="copyFilterLink" class="primary-btn">Copy filter link</button>
             </div>
           </div>
         </div>
@@ -150,31 +150,31 @@
         <section id="menuContainer" class="menu-container" aria-live="polite"></section>
       </section>
 
-      <!-- واجهة المطعم (الاستلام وإدارة الحالة) -->
+      <!-- Restaurant Interface (Order Management) -->
       <section id="storeView" hidden>
         <div class="category-section">
           <div class="category-header">
-            <h3 class="category-title">طلبات واردة</h3>
-            <p class="category-desc">تحديثات فورية بين التبويبات</p>
+            <h3 class="category-title">Incoming Orders</h3>
+            <p class="category-desc">Real-time updates across tabs</p>
           </div>
           <div class="items-grid" id="storeOrders"></div>
         </div>
         <div class="category-section">
           <div class="category-header">
-            <h3 class="category-title">إعدادات الصوت</h3>
-            <p class="category-desc">تنبيه للطلبات الجديدة</p>
+            <h3 class="category-title">Sound Settings</h3>
+            <p class="category-desc">New order notifications</p>
           </div>
           <div class="items-grid">
             <div class="card" style="grid-column: 1/-1; display:flex; align-items:center; justify-content:space-between;">
               <div>
-                <h4 style="margin:0 0 6px;">صوت الطلب الجديد</h4>
-                <p class="muted" style="margin:0;">تشغيل/كتم واختبار النغمة</p>
+                <h4 style="margin:0 0 6px;">New Order Sound</h4>
+                <p class="muted" style="margin:0;">Play/mute and test ringtone</p>
               </div>
               <div class="actions">
                 <label style="display:flex; align-items:center; gap:8px;">
-                  <input type="checkbox" id="muteToggle" /> كتم
+                  <input type="checkbox" id="muteToggle" /> Mute
                 </label>
-                <button id="testRingtone" class="secondary-btn">اختبار</button>
+                <button id="testRingtone" class="secondary-btn">Test</button>
               </div>
             </div>
           </div>
