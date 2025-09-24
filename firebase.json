@@ -1,0 +1,43 @@
+{
+  "firebase": {
+    "apiKey": "AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "authDomain": "lolivo-restaurant.firebaseapp.com",
+    "projectId": "lolivo-restaurant",
+    "storageBucket": "lolivo-restaurant.appspot.com",
+    "messagingSenderId": "123456789012",
+    "appId": "1:123456789012:web:abcdef1234567890abcdef",
+    "measurementId": "G-XXXXXXXXXX"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=31536000"
+          }
+        ]
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
