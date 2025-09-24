@@ -1,3 +1,69 @@
+// ---------- PWA Service Worker Registration ----------
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('SW registered: ', registration);
+      })
+      .catch((registrationError) => {
+        console.log('SW registration failed: ', registrationError);
+      });
+  });
+}
+
+// ---------- PWA Install Prompt ----------
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault();
+  // Stash the event so it can be triggered later
+  deferredPrompt = e;
+  // Show install button or banner
+  showInstallButton();
+});
+
+function showInstallButton() {
+  // Create install button
+  const installBtn = document.createElement('button');
+  installBtn.textContent = 'تثبيت التطبيق';
+  installBtn.className = 'install-btn';
+  installBtn.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--brand);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+  `;
+  
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to the install prompt: ${outcome}`);
+      deferredPrompt = null;
+      installBtn.remove();
+    }
+  });
+  
+  document.body.appendChild(installBtn);
+  
+  // Auto-hide after 10 seconds
+  setTimeout(() => {
+    if (installBtn.parentNode) {
+      installBtn.remove();
+    }
+  }, 10000);
+}
+
 // ---------- Delivery Fee Calculation ----------
 class DeliveryService {
   constructor() {
