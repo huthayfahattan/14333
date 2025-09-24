@@ -1,0 +1,110 @@
+{
+  "company_info": {
+    "company_name_ar": "لوليفو للخدمات الغذائية",
+    "company_name_en": "L'olivo Food Services LLC",
+    "legal_name": "L'olivo Food Services LLC",
+    "trade_name": "لوليفو",
+    "business_type": "ذات مسؤولية محدودة",
+    "business_type_en": "Limited Liability Company"
+  },
+  "registration_details": {
+    "registration_number": "1010123456",
+    "commercial_license": "4030123456789",
+    "tax_id": "300123456789003",
+    "duns_number": "123456789",
+    "registration_date": "2024-01-15",
+    "expiry_date": "2025-01-15",
+    "issuing_authority": "وزارة التجارة والاستثمار",
+    "issuing_authority_en": "Ministry of Commerce and Investment"
+  },
+  "address": {
+    "headquarters": {
+      "street": "شارع الملك فهد",
+      "street_en": "King Fahd Street",
+      "building_number": "123",
+      "district": "الملز",
+      "district_en": "Al Malaz",
+      "city": "الرياض",
+      "city_en": "Riyadh",
+      "state": "منطقة الرياض",
+      "state_en": "Riyadh Region",
+      "postal_code": "12345",
+      "country": "المملكة العربية السعودية",
+      "country_en": "Kingdom of Saudi Arabia",
+      "country_code": "SA"
+    },
+    "branch_offices": [
+      {
+        "name": "فرع جدة",
+        "name_en": "Jeddah Branch",
+        "address": "شارع التحلية، جدة",
+        "phone": "+966501234568"
+      }
+    ]
+  },
+  "contact_information": {
+    "phone": {
+      "primary": "+966501234567",
+      "secondary": "+966501234568",
+      "whatsapp": "+966501234567"
+    },
+    "email": {
+      "info": "info@lolivo.com",
+      "support": "support@lolivo.com",
+      "orders": "orders@lolivo.com",
+      "business": "business@lolivo.com"
+    },
+    "website": {
+      "primary": "https://lolivo.com",
+      "app": "https://huthayfahattan.github.io/14333/",
+      "social": {
+        "instagram": "@lolivo_restaurant",
+        "twitter": "@lolivo_ksa",
+        "facebook": "LolivoRestaurant"
+      }
+    }
+  },
+  "business_activities": {
+    "primary": "خدمات الطعام والمشروبات",
+    "primary_en": "Food and Beverage Services",
+    "secondary": [
+      "توصيل الطعام",
+      "خدمات المطاعم",
+      "الاستشارات الغذائية"
+    ],
+    "naics_code": "722511",
+    "sic_code": "5812"
+  },
+  "financial_information": {
+    "currency": "SAR",
+    "currency_en": "Saudi Riyal",
+    "annual_revenue": "5000000",
+    "employee_count": "25",
+    "established_year": "2024"
+  },
+  "compliance": {
+    "vat_registered": true,
+    "vat_number": "300123456789003",
+    "zakat_registered": true,
+    "labor_license": "1234567890",
+    "municipal_license": "9876543210"
+  },
+  "app_store_info": {
+    "google_play": {
+      "package_name": "com.lolivo.restaurant",
+      "developer_name": "L'olivo Food Services LLC",
+      "developer_email": "developer@lolivo.com"
+    },
+    "apple_app_store": {
+      "bundle_id": "com.lolivo.restaurant",
+      "developer_name": "L'olivo Food Services LLC",
+      "developer_email": "developer@lolivo.com"
+    }
+  },
+  "verification": {
+    "verified_by": "Dun & Bradstreet",
+    "verification_date": "2024-01-15",
+    "verification_status": "Active",
+    "next_review_date": "2025-01-15"
+  }
+}

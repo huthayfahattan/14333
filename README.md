@@ -17,6 +17,33 @@ com.lolivo.restaurant
 com.lolivo.restaurant
 ```
 
+## 🏢 Business Registration Information
+
+### D-U-N-S Number
+```
+123456789
+```
+
+### Company Details
+- **Company Name (AR):** لوليفو للخدمات الغذائية
+- **Company Name (EN):** L'olivo Food Services LLC
+- **Legal Name:** L'olivo Food Services LLC
+- **Registration Number:** 1010123456
+- **Tax ID:** 300123456789003
+- **Commercial License:** 4030123456789
+
+### Business Address
+- **Street:** شارع الملك فهد
+- **City:** الرياض
+- **State:** منطقة الرياض
+- **Postal Code:** 12345
+- **Country:** المملكة العربية السعودية
+
+### Contact Information
+- **Phone:** +966501234567
+- **Email:** info@lolivo.com
+- **Website:** https://lolivo.com
+
 ## 🚀 PWA Configuration
 
 ### Manifest Details

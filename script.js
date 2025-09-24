@@ -1,3 +1,28 @@
+// ---------- Business Information ----------
+const BUSINESS_INFO = {
+  companyName: 'لوليفو للخدمات الغذائية',
+  legalName: 'L\'olivo Food Services LLC',
+  dunsNumber: '123456789',
+  registrationNumber: '1010123456',
+  taxId: '300123456789003',
+  commercialLicense: '4030123456789',
+  address: {
+    street: 'شارع الملك فهد',
+    city: 'الرياض',
+    state: 'منطقة الرياض',
+    postalCode: '12345',
+    country: 'المملكة العربية السعودية'
+  },
+  contact: {
+    phone: '+966501234567',
+    email: 'info@lolivo.com',
+    website: 'https://lolivo.com'
+  }
+};
+
+// عرض معلومات الشركة في Console
+console.log('Business Information:', BUSINESS_INFO);
+
 // ---------- PWA Service Worker Registration ----------
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

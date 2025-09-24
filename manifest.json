@@ -11,6 +11,30 @@
   "lang": "ar",
   "dir": "rtl",
   "categories": ["food", "restaurant", "shopping"],
+  "version": "1.0.0",
+  "package_name": "com.lolivo.restaurant",
+  "bundle_id": "com.lolivo.restaurant",
+  "duns_number": "123456789",
+  "business_registration": {
+    "company_name": "لوليفو للخدمات الغذائية",
+    "legal_name": "L'olivo Food Services LLC",
+    "registration_number": "1010123456",
+    "tax_id": "300123456789003",
+    "commercial_license": "4030123456789",
+    "duns_number": "123456789",
+    "address": {
+      "street": "شارع الملك فهد",
+      "city": "الرياض",
+      "state": "منطقة الرياض",
+      "postal_code": "12345",
+      "country": "المملكة العربية السعودية"
+    },
+    "contact": {
+      "phone": "+966501234567",
+      "email": "info@lolivo.com",
+      "website": "https://lolivo.com"
+    }
+  },
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
