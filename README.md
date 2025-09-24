@@ -1,4 +1,26 @@
-# L'olivo - Food Ordering App
+# 🍽️ L'olivo Restaurant - Food Ordering App
+
+A modern, responsive food ordering application for L'olivo Restaurant with three distinct interfaces: Customer, Store, and Admin.
+
+## 🌐 **Live Application Links**
+- **GitHub Pages:** https://huthayfahattan.github.io/14333/
+- **Firebase Hosting:** https://lolivo-restaurant.web.app (After Firebase deployment)
+- **Custom Domain:** https://lolivo.com (If configured)
+
+## 📋 **Quick Access**
+- **All Versions:** [ALL_VERSIONS.md](ALL_VERSIONS.md)
+- **Quick Deploy:** [QUICK_DEPLOY.md](QUICK_DEPLOY.md)
+- **Firebase Setup:** [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
+- **Firebase Deployment:** [FIREBASE_DEPLOYMENT.md](FIREBASE_DEPLOYMENT.md)
+- **Business Registration:** [business-registration.json](business-registration.json)
+
+## 🗄️ **Database & Services**
+- **Firebase Project:** `lolivo-restaurant`
+- **Database:** Firestore (Real-time)
+- **Storage:** Firebase Storage
+- **Hosting:** Firebase Hosting
+- **Console:** https://console.firebase.google.com/project/lolivo-restaurant
+- **Collections:** `/orders`, `/restaurant/menu`, `/admin/settings`
 
 ## 📱 Android Package Information
 
