@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>L'olivo | Admin Management</title>
+    <meta name="description" content="L'olivo Restaurant - Admin management system for restaurant owners" />
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#dc3545" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="L'olivo Admin" />
+    
+    <!-- Android Package Name -->
+    <meta name="application-name" content="L'olivo Admin" />
+    <meta name="msapplication-TileColor" content="#dc3545" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Business Registration -->
+    <meta name="duns-number" content="123456789" />
+    <meta name="business-registration" content="1010123456" />
+    <meta name="tax-id" content="300123456789003" />
+    <meta name="commercial-license" content="4030123456789" />
+    <meta name="company-name" content="L'olivo Food Services LLC" />
+    <meta name="legal-name" content="L'olivo Food Services LLC" />
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/icons/icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/icons/icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/icons/icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/icons/icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/icons/icon-57x57.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+      
+      // Firebase configuration (Replace with your actual config)
+      const firebaseConfig = {
+        apiKey: "AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        authDomain: "lolivo-restaurant.firebaseapp.com",
+        projectId: "lolivo-restaurant",
+        storageBucket: "lolivo-restaurant.appspot.com",
+        messagingSenderId: "123456789012",
+        appId: "1:123456789012:web:abcdef1234567890abcdef",
+        measurementId: "G-XXXXXXXXXX"
+      };
+      
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      
+      // Make Firebase globally available
+      window.firebase = { db, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot };
+    </script>
+  </head>
+  <body>
+    <header class="app-header">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">🍃</div>
+          <div>
+            <h1>L'olivo Admin</h1>
+            <p class="subtitle">Restaurant Management System</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="role-switcher">
+            <label for="langSelect" class="sr-only">Language</label>
+            <select id="langSelect" title="Language">
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+      <!-- Admin View -->
+      <section id="adminView" class="view-section active">
+        <div class="admin-header">
+          <h2>Restaurant Management</h2>
+          <div class="admin-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total Orders:</span>
+              <span class="stat-value" id="totalOrdersCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Menu Items:</span>
+              <span class="stat-value" id="menuItemsCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Categories:</span>
+              <span class="stat-value" id="categoriesCount">0</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="admin-tabs">
+          <button class="tab-btn active" data-tab="menu">Menu Management</button>
+          <button class="tab-btn" data-tab="orders">Orders</button>
+          <button class="tab-btn" data-tab="settings">Settings</button>
+        </div>
+        
+        <!-- Menu Management Tab -->
+        <div class="tab-content active" id="menuTab">
+          <div class="admin-section">
+            <div class="section-header">
+              <h3>Categories</h3>
+              <button class="add-btn" id="addCategoryBtn">Add Category</button>
+            </div>
+            <div class="categories-list" id="adminCategoriesList"></div>
+          </div>
+          
+          <div class="admin-section">
+            <div class="section-header">
+              <h3>Menu Items</h3>
+              <button class="add-btn" id="addItemBtn">Add Item</button>
+            </div>
+            <div class="items-list" id="adminItemsList"></div>
+          </div>
+        </div>
+        
+        <!-- Orders Tab -->
+        <div class="tab-content" id="ordersTab">
+          <div class="admin-section">
+            <h3>All Orders</h3>
+            <div class="orders-list" id="adminOrdersList"></div>
+          </div>
+        </div>
+        
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settingsTab">
+          <div class="admin-section">
+            <h3>Restaurant Settings</h3>
+            <div class="settings-form">
+              <div class="form-group">
+                <label for="restaurantName">Restaurant Name</label>
+                <input type="text" id="restaurantName" value="L'olivo" />
+              </div>
+              <div class="form-group">
+                <label for="restaurantPhone">Phone Number</label>
+                <input type="tel" id="restaurantPhone" value="+966 11 234 5678" />
+              </div>
+              <div class="form-group">
+                <label for="restaurantAddress">Address</label>
+                <textarea id="restaurantAddress" rows="3">123 King Fahd Road, Riyadh, Saudi Arabia</textarea>
+              </div>
+              <div class="form-group">
+                <label for="deliveryFee">Base Delivery Fee</label>
+                <input type="number" id="deliveryFee" value="15" step="0.01" />
+              </div>
+              <button class="save-btn" id="saveSettingsBtn">Save Settings</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Add Category Modal -->
+    <div class="modal" id="addCategoryModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add Category</h2>
+          <button class="close-modal" id="closeAddCategoryBtn">×</button>
+        </div>
+        <form id="addCategoryForm">
+          <div class="form-group">
+            <label for="categoryTitle">Category Title *</label>
+            <input type="text" id="categoryTitle" required />
+          </div>
+          <div class="form-group">
+            <label for="categoryDescription">Description</label>
+            <textarea id="categoryDescription" rows="3"></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Add Category</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div class="modal" id="addItemModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add Menu Item</h2>
+          <button class="close-modal" id="closeAddItemBtn">×</button>
+        </div>
+        <form id="addItemForm">
+          <div class="form-group">
+            <label for="itemName">Item Name *</label>
+            <input type="text" id="itemName" required />
+          </div>
+          <div class="form-group">
+            <label for="itemDescription">Description</label>
+            <textarea id="itemDescription" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="itemPrice">Price *</label>
+            <input type="number" id="itemPrice" step="0.01" min="0" required />
+          </div>
+          <div class="form-group">
+            <label for="itemCategory">Category *</label>
+            <select id="itemCategory" required></select>
+          </div>
+          <div class="form-group">
+            <label for="itemImage">Image</label>
+            <input type="file" id="itemImage" accept="image/*" />
+            <div class="image-preview" id="imagePreview"></div>
+          </div>
+          <div class="form-group">
+            <label for="itemModifiers">Modifiers (JSON)</label>
+            <textarea id="itemModifiers" rows="4" placeholder='[{"name":"Size","type":"single","required":true,"options":[{"name":"Small","priceDelta":0},{"name":"Large","priceDelta":5}]}]'></textarea>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="itemFeatured" />
+              Featured Item
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="itemRating">Rating (1-5)</label>
+            <input type="number" id="itemRating" min="1" max="5" step="0.1" value="4.5" />
+          </div>
+          <div class="form-group">
+            <label for="itemDeliveryTime">Delivery Time (minutes)</label>
+            <input type="number" id="itemDeliveryTime" min="5" max="60" value="25" />
+          </div>
+          <button type="submit" class="submit-btn">Add Item</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div class="modal" id="editItemModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Edit Menu Item</h2>
+          <button class="close-modal" id="closeEditItemBtn">×</button>
+        </div>
+        <form id="editItemForm">
+          <div class="form-group">
+            <label for="editItemName">Item Name *</label>
+            <input type="text" id="editItemName" required />
+          </div>
+          <div class="form-group">
+            <label for="editItemDescription">Description</label>
+            <textarea id="editItemDescription" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="editItemPrice">Price *</label>
+            <input type="number" id="editItemPrice" step="0.01" min="0" required />
+          </div>
+          <div class="form-group">
+            <label for="editItemCategory">Category *</label>
+            <select id="editItemCategory" required></select>
+          </div>
+          <div class="form-group">
+            <label for="editItemImage">Image</label>
+            <input type="file" id="editItemImage" accept="image/*" />
+            <div class="current-image-preview" id="currentImagePreview" style="display: none;">
+              <img id="currentImage" src="" alt="Current image" />
+              <button type="button" id="removeCurrentImage">Remove Current Image</button>
+            </div>
+            <div class="image-preview" id="editImagePreview"></div>
+          </div>
+          <div class="form-group">
+            <label for="editItemModifiers">Modifiers (JSON)</label>
+            <textarea id="editItemModifiers" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="editItemFeatured" />
+              Featured Item
+            </label>
+          </div>
+          <div class="form-group">
+            <label for="editItemRating">Rating (1-5)</label>
+            <input type="number" id="editItemRating" min="1" max="5" step="0.1" />
+          </div>
+          <div class="form-group">
+            <label for="editItemDeliveryTime">Delivery Time (minutes)</label>
+            <input type="number" id="editItemDeliveryTime" min="5" max="60" />
+          </div>
+          <button type="submit" class="submit-btn">Update Item</button>
+        </form>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <p>&copy; 2024 L'olivo Food Services LLC. All rights reserved.</p>
+    </footer>
+
+    <script src="script-admin.js"></script>
+  </body>
+</html>

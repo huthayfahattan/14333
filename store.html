@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>L'olivo | Restaurant Order Management</title>
+    <meta name="description" content="L'olivo Restaurant - Order management system for restaurant staff" />
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#dc3545" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="L'olivo Store" />
+    
+    <!-- Android Package Name -->
+    <meta name="application-name" content="L'olivo Store" />
+    <meta name="msapplication-TileColor" content="#dc3545" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Business Registration -->
+    <meta name="duns-number" content="123456789" />
+    <meta name="business-registration" content="1010123456" />
+    <meta name="tax-id" content="300123456789003" />
+    <meta name="commercial-license" content="4030123456789" />
+    <meta name="company-name" content="L'olivo Food Services LLC" />
+    <meta name="legal-name" content="L'olivo Food Services LLC" />
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/icons/icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/icons/icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/icons/icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/icons/icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/icons/icon-57x57.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+      
+      // Firebase configuration (Replace with your actual config)
+      const firebaseConfig = {
+        apiKey: "AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        authDomain: "lolivo-restaurant.firebaseapp.com",
+        projectId: "lolivo-restaurant",
+        storageBucket: "lolivo-restaurant.appspot.com",
+        messagingSenderId: "123456789012",
+        appId: "1:123456789012:web:abcdef1234567890abcdef",
+        measurementId: "G-XXXXXXXXXX"
+      };
+      
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      
+      // Make Firebase globally available
+      window.firebase = { db, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot };
+    </script>
+  </head>
+  <body>
+    <header class="app-header">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">🍃</div>
+          <div>
+            <h1>L'olivo Store</h1>
+            <p class="subtitle">Order Management System</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="audio-controls">
+            <button id="muteBtn" class="mute-btn" title="Mute/Unmute Notifications">
+              🔇
+            </button>
+          </div>
+          <div class="role-switcher">
+            <label for="langSelect" class="sr-only">Language</label>
+            <select id="langSelect" title="Language">
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+      <!-- Store View -->
+      <section id="storeView" class="view-section active">
+        <div class="store-header">
+          <h2>Order Management</h2>
+          <div class="store-stats">
+            <div class="stat-item">
+              <span class="stat-label">Pending:</span>
+              <span class="stat-value" id="pendingCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Preparing:</span>
+              <span class="stat-value" id="preparingCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Ready:</span>
+              <span class="stat-value" id="readyCount">0</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="orders-container">
+          <div class="orders-section">
+            <h3>Pending Orders</h3>
+            <div class="orders-list" id="pendingOrders"></div>
+          </div>
+          
+          <div class="orders-section">
+            <h3>Preparing Orders</h3>
+            <div class="orders-list" id="preparingOrders"></div>
+          </div>
+          
+          <div class="orders-section">
+            <h3>Ready Orders</h3>
+            <div class="orders-list" id="readyOrders"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="orderDetailsModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Order Details</h2>
+          <button class="close-modal" id="closeOrderDetailsBtn">×</button>
+        </div>
+        <div class="order-details-content">
+          <div class="order-info">
+            <div class="order-header">
+              <h3 id="orderId"></h3>
+              <span class="order-status" id="orderStatus"></span>
+            </div>
+            <div class="customer-info">
+              <h4>Customer Information</h4>
+              <div class="info-item">
+                <span class="info-label">Name:</span>
+                <span id="customerName"></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Phone:</span>
+                <span id="customerPhone"></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Order Type:</span>
+                <span id="orderType"></span>
+              </div>
+              <div class="info-item" id="addressInfo" style="display: none;">
+                <span class="info-label">Address:</span>
+                <span id="customerAddress"></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Notes:</span>
+                <span id="orderNotes"></span>
+              </div>
+            </div>
+            
+            <div class="order-items">
+              <h4>Order Items</h4>
+              <div id="orderItemsList"></div>
+            </div>
+            
+            <div class="order-totals">
+              <div class="summary-line">
+                <span>Subtotal:</span>
+                <span id="orderSubtotal"></span>
+              </div>
+              <div class="summary-line">
+                <span>Delivery Fee:</span>
+                <span id="orderDeliveryFee"></span>
+              </div>
+              <div class="summary-line total">
+                <span>Total:</span>
+                <span id="orderTotal"></span>
+              </div>
+            </div>
+            
+            <div class="order-actions">
+              <button class="action-btn preparing" id="markPreparingBtn">Mark as Preparing</button>
+              <button class="action-btn ready" id="markReadyBtn">Mark as Ready</button>
+              <button class="action-btn completed" id="markCompletedBtn">Mark as Completed</button>
+              <button class="action-btn print" id="printInvoiceBtn">Print Invoice</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <p>&copy; 2024 L'olivo Food Services LLC. All rights reserved.</p>
+    </footer>
+
+    <script src="script-store.js"></script>
+  </body>
+</html>

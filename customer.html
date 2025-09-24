@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>L'olivo | Customer Menu & Ordering</title>
+    <meta name="description" content="L'olivo Restaurant - Order sandwiches, salads, boxes and beverages" />
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#dc3545" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="L'olivo Customer" />
+    
+    <!-- Android Package Name -->
+    <meta name="application-name" content="L'olivo Customer" />
+    <meta name="msapplication-TileColor" content="#dc3545" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Business Registration -->
+    <meta name="duns-number" content="123456789" />
+    <meta name="business-registration" content="1010123456" />
+    <meta name="tax-id" content="300123456789003" />
+    <meta name="commercial-license" content="4030123456789" />
+    <meta name="company-name" content="L'olivo Food Services LLC" />
+    <meta name="legal-name" content="L'olivo Food Services LLC" />
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/icons/icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/icons/icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/icons/icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/icons/icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/icons/icon-57x57.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+      
+      // Firebase configuration (Replace with your actual config)
+      const firebaseConfig = {
+        apiKey: "AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        authDomain: "lolivo-restaurant.firebaseapp.com",
+        projectId: "lolivo-restaurant",
+        storageBucket: "lolivo-restaurant.appspot.com",
+        messagingSenderId: "123456789012",
+        appId: "1:123456789012:web:abcdef1234567890abcdef",
+        measurementId: "G-XXXXXXXXXX"
+      };
+      
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      
+      // Make Firebase globally available
+      window.firebase = { db, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot };
+    </script>
+  </head>
+  <body>
+    <header class="app-header">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">🍃</div>
+          <div>
+            <h1>L'olivo</h1>
+            <p class="subtitle">Italian-style sandwiches and grilled specialties</p>
+          </div>
+        </div>
+        <nav class="category-nav" id="categoryNav"></nav>
+        <div class="header-actions">
+          <button id="supportBtn" class="support-btn" aria-label="Customer Support" title="Customer Support">
+            💬
+          </button>
+          <div class="role-switcher">
+            <label for="langSelect" class="sr-only">Language</label>
+            <select id="langSelect" title="Language">
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+        </div>
+        <button class="cart-button" id="openCartBtn" aria-label="Open Cart">
+          <span class="cart-icon">🛒</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+    </header>
+
+    <main class="app-main">
+      <!-- Customer View -->
+      <section id="customerView" class="view-section active">
+        <div class="menu-container">
+          <div class="menu-grid" id="menuGrid"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer" id="cartDrawer">
+      <div class="cart-header">
+        <h2>Your Order</h2>
+        <button class="close-cart" id="closeCartBtn" aria-label="Close Cart">×</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer">
+        <div class="cart-summary">
+          <div class="summary-line">
+            <span>Subtotal:</span>
+            <span id="subtotalAmount">$0.00</span>
+          </div>
+          <div class="summary-line">
+            <span>Delivery Fee:</span>
+            <span id="deliveryFeeAmount">$0.00</span>
+          </div>
+          <div class="summary-line total">
+            <span>Total:</span>
+            <span id="totalAmount">$0.00</span>
+          </div>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn">Place Order</button>
+      </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Complete Your Order</h2>
+          <button class="close-modal" id="closeCheckoutBtn">×</button>
+        </div>
+        <form id="checkoutForm">
+          <div class="form-group">
+            <label for="customerName">Full Name *</label>
+            <input type="text" id="customerName" required />
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">Phone Number *</label>
+            <input type="tel" id="customerPhone" required />
+          </div>
+          <div class="form-group">
+            <label for="fulfillment">Order Type *</label>
+            <select id="fulfillment" required>
+              <option value="pickup">Pickup</option>
+              <option value="delivery">Delivery</option>
+            </select>
+          </div>
+          <div class="form-group" id="addressGroup" style="display: none;">
+            <label for="customerAddress">Delivery Address *</label>
+            <textarea id="customerAddress" rows="3"></textarea>
+          </div>
+          <div class="form-group" id="distanceGroup" style="display: none;">
+            <label for="distance">Distance (km)</label>
+            <input type="number" id="distance" step="0.1" min="0" value="5" />
+          </div>
+          <div class="form-group">
+            <label for="orderNotes">Special Instructions</label>
+            <textarea id="orderNotes" rows="2" placeholder="Any special requests..."></textarea>
+          </div>
+          <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div id="orderSummaryItems"></div>
+            <div class="order-totals">
+              <div class="summary-line">
+                <span>Subtotal:</span>
+                <span id="orderSubtotal">$0.00</span>
+              </div>
+              <div class="summary-line">
+                <span>Delivery Fee:</span>
+                <span id="orderDeliveryFee">$0.00</span>
+              </div>
+              <div class="summary-line total">
+                <span>Total:</span>
+                <span id="orderTotal">$0.00</span>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="submit-order-btn">Place Order</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Customer Customization Modal -->
+    <div class="modal" id="customerCustomizeModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Customize Your Order</h2>
+          <button class="close-modal" id="closeCustomerCustomizeBtn">×</button>
+        </div>
+        <div class="customize-content">
+          <div class="item-info">
+            <img id="customerItemImage" src="" alt="" />
+            <div class="item-details">
+              <h3 id="customerItemName"></h3>
+              <p id="customerItemDesc"></p>
+              <div class="item-price">
+                <span id="customerBasePrice"></span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="customize-section">
+            <h4>Bread Type</h4>
+            <div class="options-grid" id="customerBreadOptions"></div>
+          </div>
+          
+          <div class="customize-section">
+            <h4>Additional Options</h4>
+            <div id="customerModsGroups"></div>
+          </div>
+          
+          <div class="customize-section">
+            <h4>Special Notes</h4>
+            <textarea id="customerSpecialNotes" rows="3" placeholder="Any special requests..."></textarea>
+          </div>
+          
+          <div class="price-summary">
+            <div class="price-line">
+              <span>Base Price:</span>
+              <span id="customerBasePriceDisplay"></span>
+            </div>
+            <div id="customerPriceModifiers"></div>
+            <div class="price-line total">
+              <span>Total:</span>
+              <span id="customerTotalPrice"></span>
+            </div>
+          </div>
+          
+          <div class="modal-actions">
+            <button class="cancel-btn" id="cancelCustomerCustomize">Cancel</button>
+            <button class="add-to-cart-btn" id="addToCartCustomized">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sandwich Customization Modal -->
+    <div class="modal" id="sandwichCustomizeModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Customize Your Sandwich</h2>
+          <button class="close-modal" id="closeSandwichCustomizeBtn">×</button>
+        </div>
+        <div class="customize-content">
+          <div class="item-info">
+            <img id="sandwichItemImage" src="" alt="" />
+            <div class="item-details">
+              <h3 id="sandwichItemName"></h3>
+              <p id="sandwichItemDesc"></p>
+              <div class="item-price">
+                <span id="sandwichBasePrice"></span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="customize-section">
+            <h4>Bread Type</h4>
+            <div class="options-grid" id="sandwichBreadOptions">
+              <div class="option-item">
+                <input type="radio" name="breadType" value="white" id="breadWhite" checked />
+                <label for="breadWhite">White Bread</label>
+              </div>
+              <div class="option-item">
+                <input type="radio" name="breadType" value="wholewheat" id="breadWholewheat" />
+                <label for="breadWholewheat">Whole Wheat</label>
+              </div>
+              <div class="option-item">
+                <input type="radio" name="breadType" value="ciabatta" id="breadCiabatta" />
+                <label for="breadCiabatta">Ciabatta</label>
+              </div>
+              <div class="option-item">
+                <input type="radio" name="breadType" value="baguette" id="breadBaguette" />
+                <label for="breadBaguette">Baguette</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="customize-section">
+            <h4>Extra Ingredients</h4>
+            <div class="options-grid" id="sandwichExtraIngredients">
+              <div class="option-item">
+                <input type="checkbox" name="extraIngredients" value="Extra Cheese" id="extraCheese" />
+                <label for="extraCheese">Extra Cheese (+$2.00)</label>
+              </div>
+              <div class="option-item">
+                <input type="checkbox" name="extraIngredients" value="Bacon" id="extraBacon" />
+                <label for="extraBacon">Bacon (+$3.00)</label>
+              </div>
+              <div class="option-item">
+                <input type="checkbox" name="extraIngredients" value="Avocado" id="extraAvocado" />
+                <label for="extraAvocado">Avocado (+$2.50)</label>
+              </div>
+              <div class="option-item">
+                <input type="checkbox" name="extraIngredients" value="Extra Sauce" id="extraSauce" />
+                <label for="extraSauce">Extra Sauce (+$1.00)</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="customize-section">
+            <h4>Special Instructions</h4>
+            <textarea id="sandwichSpecialNotes" rows="3" placeholder="Any special cooking instructions..."></textarea>
+          </div>
+          
+          <div class="price-summary">
+            <div class="price-line">
+              <span>Base Price:</span>
+              <span id="sandwichBasePriceDisplay"></span>
+            </div>
+            <div id="sandwichPriceModifiers"></div>
+            <div class="price-line total">
+              <span>Total:</span>
+              <span id="sandwichTotalPrice"></span>
+            </div>
+          </div>
+          
+          <div class="modal-actions">
+            <button class="cancel-btn" id="cancelSandwichCustomize">Cancel</button>
+            <button class="add-to-cart-btn" id="addSandwichToCart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal" id="supportModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Customer Support</h2>
+          <button class="close-modal" id="closeSupportBtn">×</button>
+        </div>
+        <div class="support-content">
+          <div class="support-options">
+            <div class="support-option" data-option="chat">
+              <div class="support-icon">💬</div>
+              <div class="support-info">
+                <h3>Live Chat</h3>
+                <p>Chat with our support team</p>
+              </div>
+            </div>
+            <div class="support-option" data-option="phone">
+              <div class="support-icon">📞</div>
+              <div class="support-info">
+                <h3>Phone Support</h3>
+                <p>Call us directly</p>
+              </div>
+            </div>
+            <div class="support-option" data-option="whatsapp">
+              <div class="support-icon">📱</div>
+              <div class="support-info">
+                <h3>WhatsApp</h3>
+                <p>Message us on WhatsApp</p>
+              </div>
+            </div>
+            <div class="support-option" data-option="email">
+              <div class="support-icon">✉️</div>
+              <div class="support-info">
+                <h3>Email Support</h3>
+                <p>Send us an email</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="chat-form" id="chatForm" style="display: none;">
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input">
+              <input type="text" id="chatInput" placeholder="Type your message..." />
+              <button id="sendMessageBtn">Send</button>
+            </div>
+          </div>
+          
+          <div class="contact-info" id="contactInfo" style="display: none;">
+            <div class="contact-card">
+              <h3>Contact Information</h3>
+              <div class="contact-item">
+                <span class="contact-label">Phone:</span>
+                <span class="contact-value">+966 11 234 5678</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">WhatsApp:</span>
+                <span class="contact-value">+966 50 123 4567</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">Email:</span>
+                <span class="contact-value">info@lolivo.com</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-label">Address:</span>
+                <span class="contact-value">123 King Fahd Road, Riyadh</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="faq-section">
+            <h3>Frequently Asked Questions</h3>
+            <div class="faq-item">
+              <div class="faq-question">What are your delivery hours?</div>
+              <div class="faq-answer">We deliver daily from 10 AM to 12 AM.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">How long does delivery take?</div>
+              <div class="faq-answer">Delivery typically takes 30-45 minutes depending on your location.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Do you accept cash on delivery?</div>
+              <div class="faq-answer">Yes, we accept both cash and card payments.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Can I customize my order?</div>
+              <div class="faq-answer">Yes, you can customize bread type, add extra ingredients, and add special notes.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <p>&copy; 2024 L'olivo Food Services LLC. All rights reserved.</p>
+    </footer>
+
+    <script src="script-customer.js"></script>
+  </body>
+</html>
