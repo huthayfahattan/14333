@@ -1,4 +1,124 @@
-// Data: Menu of L’olivo
+// ---------- Firebase Database Services ----------
+class FirebaseService {
+  constructor() {
+    this.db = null;
+    this.isInitialized = false;
+  }
+
+  async init() {
+    if (this.isInitialized) return;
+    
+    // انتظار تحميل Firebase
+    while (!window.firebase) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    
+    this.db = window.firebase.db;
+    this.isInitialized = true;
+    console.log('Firebase initialized successfully');
+  }
+
+  // حفظ الطلبات في قاعدة البيانات
+  async saveOrder(order) {
+    await this.init();
+    try {
+      const docRef = await window.firebase.addDoc(window.firebase.collection(this.db, 'orders'), {
+        ...order,
+        createdAt: new Date(),
+        status: 'pending'
+      });
+      console.log('Order saved with ID:', docRef.id);
+      return docRef.id;
+    } catch (error) {
+      console.error('Error saving order:', error);
+      throw error;
+    }
+  }
+
+  // جلب جميع الطلبات
+  async getOrders() {
+    await this.init();
+    try {
+      const querySnapshot = await window.firebase.getDocs(window.firebase.collection(this.db, 'orders'));
+      const orders = [];
+      querySnapshot.forEach((doc) => {
+        orders.push({ id: doc.id, ...doc.data() });
+      });
+      return orders;
+    } catch (error) {
+      console.error('Error getting orders:', error);
+      return [];
+    }
+  }
+
+  // تحديث حالة الطلب
+  async updateOrderStatus(orderId, status) {
+    await this.init();
+    try {
+      const orderRef = window.firebase.doc(this.db, 'orders', orderId);
+      await window.firebase.updateDoc(orderRef, {
+        status: status,
+        updatedAt: new Date()
+      });
+      console.log('Order status updated:', orderId, status);
+    } catch (error) {
+      console.error('Error updating order:', error);
+      throw error;
+    }
+  }
+
+  // حفظ القائمة في قاعدة البيانات
+  async saveMenu(menu) {
+    await this.init();
+    try {
+      const menuRef = window.firebase.doc(this.db, 'restaurant', 'menu');
+      await window.firebase.updateDoc(menuRef, {
+        categories: menu,
+        updatedAt: new Date()
+      });
+      console.log('Menu saved successfully');
+    } catch (error) {
+      console.error('Error saving menu:', error);
+      throw error;
+    }
+  }
+
+  // جلب القائمة من قاعدة البيانات
+  async getMenu() {
+    await this.init();
+    try {
+      const menuRef = window.firebase.doc(this.db, 'restaurant', 'menu');
+      const menuSnap = await window.firebase.getDocs(window.firebase.collection(this.db, 'restaurant'));
+      
+      if (menuSnap.exists()) {
+        return menuSnap.data().categories || [];
+      }
+      return [];
+    } catch (error) {
+      console.error('Error getting menu:', error);
+      return [];
+    }
+  }
+
+  // الاستماع للتغييرات في الطلبات (للمطعم)
+  onOrdersChange(callback) {
+    this.init().then(() => {
+      const ordersRef = window.firebase.collection(this.db, 'orders');
+      window.firebase.onSnapshot(ordersRef, (snapshot) => {
+        const orders = [];
+        snapshot.forEach((doc) => {
+          orders.push({ id: doc.id, ...doc.data() });
+        });
+        callback(orders);
+      });
+    });
+  }
+}
+
+// إنشاء مثيل من خدمة Firebase
+const firebaseService = new FirebaseService();
+
+// Data: Menu of L'olivo
 const defaultMenu = [
   {
     id: 'sandwiches-signature',
@@ -914,7 +1034,7 @@ checkoutForm.addEventListener('change', (e) => {
   }
 });
 
-checkoutForm.addEventListener('submit', (e) => {
+checkoutForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(checkoutForm);
   const order = {
@@ -925,24 +1045,45 @@ checkoutForm.addEventListener('submit', (e) => {
       address: formData.get('address') || undefined,
       notes: formData.get('notes') || undefined,
     },
-    items: Array.from(cart.values()).map(({ item, qty }) => ({ id: item.id, name: item.name, price: item.price, qty })),
+    items: Array.from(cart.values()).map(({ item, qty }) => ({ 
+      id: item.id, 
+      name: item.name, 
+      price: item.customization ? item.customization.finalPrice : item.price, 
+      qty,
+      customization: item.customization || undefined
+    })),
     totals: calcTotals(),
     createdAt: new Date().toISOString(),
   };
 
-  // For now, just show a confirmation and reset
-  alert(currentLang === 'ar' ? `تم استلام طلبك بنجاح!\nالإجمالي: ${formatPrice(order.totals.total)}\nسنقوم بالتواصل معك قريبًا.` : `Order received!\nTotal: ${formatPrice(order.totals.total)}\nWe will contact you soon.`);
-  // persist order to OrdersService
-  const created = OrdersService.create(order);
-  // expose tracking id to customer
-  alert((currentLang === 'ar' ? 'رقم تتبع طلبك: ' : 'Your order ID: ') + created.id);
-  // open printable invoice
-  openInvoice(created);
-  addRecentOrder(created.id);
-  cart.clear();
-  updateCartUI();
-  closeCheckout();
-  checkoutForm.reset();
+  try {
+    // حفظ الطلب في Firebase
+    const orderId = await firebaseService.saveOrder(order);
+    
+    // عرض رسالة النجاح
+    alert(currentLang === 'ar' ? 
+      `تم استلام طلبك بنجاح!\nالإجمالي: ${formatPrice(order.totals.total)}\nرقم الطلب: ${orderId}` : 
+      `Order received!\nTotal: ${formatPrice(order.totals.total)}\nOrder ID: ${orderId}`);
+    
+    // حفظ محلياً أيضاً للنسخ الاحتياطي
+    const created = OrdersService.create(order);
+    addRecentOrder(created.id);
+    
+    // عرض الفاتورة
+    openInvoice(created);
+    
+    // تنظيف السلة
+    cart.clear();
+    updateCartUI();
+    closeCheckout();
+    checkoutForm.reset();
+    
+  } catch (error) {
+    console.error('Error saving order:', error);
+    alert(currentLang === 'ar' ? 
+      'حدث خطأ في حفظ الطلب. يرجى المحاولة مرة أخرى.' : 
+      'Error saving order. Please try again.');
+  }
 });
 
 // Init
@@ -1031,14 +1172,36 @@ function renderStore() {
       </div>`;
   }).join('');
 }
-storeOrdersEl.addEventListener('click', (e) => {
+storeOrdersEl.addEventListener('click', async (e) => {
   const btn = e.target.closest('button[data-action="status"]');
   if (!btn) return;
-  OrdersService.updateStatus(btn.getAttribute('data-id'), btn.getAttribute('data-status'));
+  
+  const orderId = btn.getAttribute('data-id');
+  const newStatus = btn.getAttribute('data-status');
+  
+  try {
+    // تحديث في Firebase
+    await firebaseService.updateOrderStatus(orderId, newStatus);
+    
+    // تحديث محلياً أيضاً
+    OrdersService.updateStatus(orderId, newStatus);
+    
+    console.log(`Order ${orderId} status updated to ${newStatus}`);
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    alert('حدث خطأ في تحديث حالة الطلب');
+  }
 });
 OrdersService.subscribe(() => {
   if (!storeView.hidden) renderStore();
   if (!adminView.hidden) renderAdmin();
+});
+
+// الاستماع للتغييرات في الطلبات من Firebase (للمطعم)
+firebaseService.onOrdersChange((orders) => {
+  if (!storeView.hidden) {
+    renderStoreOrders(orders);
+  }
 });
 
 // ---------- Admin UI ----------
