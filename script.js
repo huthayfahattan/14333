@@ -1,3 +1,83 @@
+// ---------- Delivery Fee Calculation ----------
+class DeliveryService {
+  constructor() {
+    this.baseFee = 15; // رسوم التوصيل الأساسية
+    this.freeDeliveryThreshold = 100; // الحد الأدنى للطلب المجاني
+    this.distanceRates = {
+      'near': { multiplier: 1, maxDistance: 5 }, // قريب (0-5 كم)
+      'medium': { multiplier: 1.5, maxDistance: 10 }, // متوسط (5-10 كم)
+      'far': { multiplier: 2, maxDistance: 20 } // بعيد (10-20 كم)
+    };
+    this.timeRates = {
+      'normal': 1, // وقت عادي
+      'rush': 1.3, // وقت الذروة (6-9 مساءً)
+      'late': 1.5 // وقت متأخر (بعد 10 مساءً)
+    };
+  }
+
+  // حساب رسوم التوصيل
+  calculateDeliveryFee(orderTotal, distance, deliveryTime = 'normal') {
+    let fee = this.baseFee;
+    
+    // تطبيق مضاعف المسافة
+    const distanceCategory = this.getDistanceCategory(distance);
+    fee *= this.distanceRates[distanceCategory].multiplier;
+    
+    // تطبيق مضاعف الوقت
+    fee *= this.timeRates[deliveryTime] || 1;
+    
+    // خصم للطلبات الكبيرة
+    if (orderTotal >= this.freeDeliveryThreshold) {
+      fee = 0; // توصيل مجاني
+    }
+    
+    return Math.round(fee * 100) / 100; // تقريب لرقمين عشريين
+  }
+
+  // تحديد فئة المسافة
+  getDistanceCategory(distance) {
+    if (distance <= 5) return 'near';
+    if (distance <= 10) return 'medium';
+    return 'far';
+  }
+
+  // حساب وقت التوصيل المتوقع
+  calculateDeliveryTime(distance, orderComplexity = 'normal') {
+    const baseTime = 30; // 30 دقيقة أساسية
+    const distanceTime = distance * 3; // 3 دقائق لكل كم
+    const complexityMultiplier = {
+      'simple': 1,
+      'normal': 1.2,
+      'complex': 1.5
+    };
+    
+    const totalMinutes = (baseTime + distanceTime) * complexityMultiplier[orderComplexity];
+    return Math.round(totalMinutes);
+  }
+
+  // الحصول على معلومات التوصيل الكاملة
+  getDeliveryInfo(orderTotal, distance, deliveryTime = 'normal', orderComplexity = 'normal') {
+    const fee = this.calculateDeliveryFee(orderTotal, distance, deliveryTime);
+    const estimatedTime = this.calculateDeliveryTime(distance, orderComplexity);
+    
+    return {
+      fee: fee,
+      estimatedTime: estimatedTime,
+      isFree: fee === 0,
+      distanceCategory: this.getDistanceCategory(distance),
+      breakdown: {
+        baseFee: this.baseFee,
+        distanceMultiplier: this.distanceRates[this.getDistanceCategory(distance)].multiplier,
+        timeMultiplier: this.timeRates[deliveryTime] || 1,
+        freeDeliveryThreshold: this.freeDeliveryThreshold
+      }
+    };
+  }
+}
+
+// إنشاء مثيل من خدمة التوصيل
+const deliveryService = new DeliveryService();
+
 // ---------- Firebase Database Services ----------
 class FirebaseService {
   constructor() {
@@ -554,24 +634,90 @@ function changeQty(itemId, delta) {
   updateCartUI();
 }
 
+// تحديث دالة حساب الإجماليات لتشمل رسوم التوصيل
 function calcTotals() {
   let count = 0;
-  let total = 0;
+  let subtotal = 0;
   for (const { item, qty } of cart.values()) {
     count += qty;
     const itemPrice = item.customization ? item.customization.finalPrice : item.price;
-    total += itemPrice * qty;
+    subtotal += itemPrice * qty;
   }
-  return { count, total };
+  
+  // حساب رسوم التوصيل
+  const deliveryFee = calculateDeliveryFee(subtotal);
+  const total = subtotal + deliveryFee;
+  
+  return { count, subtotal, deliveryFee, total };
+}
+
+// حساب رسوم التوصيل
+function calculateDeliveryFee(orderTotal) {
+  const fulfillment = document.querySelector('select[name="fulfillment"]')?.value;
+  const distance = parseFloat(document.querySelector('input[name="distance"]')?.value) || 0;
+  
+  if (fulfillment === 'pickup') {
+    return 0; // لا توجد رسوم للاستلام
+  }
+  
+  if (fulfillment === 'delivery' && distance > 0) {
+    // تحديد وقت التوصيل بناءً على الوقت الحالي
+    const now = new Date();
+    const hour = now.getHours();
+    let deliveryTime = 'normal';
+    
+    if (hour >= 18 && hour <= 21) {
+      deliveryTime = 'rush'; // وقت الذروة
+    } else if (hour >= 22 || hour <= 6) {
+      deliveryTime = 'late'; // وقت متأخر
+    }
+    
+    // حساب تعقيد الطلب بناءً على عدد الأصناف
+    const itemCount = Array.from(cart.values()).reduce((sum, { qty }) => sum + qty, 0);
+    let orderComplexity = 'normal';
+    if (itemCount <= 2) orderComplexity = 'simple';
+    else if (itemCount >= 6) orderComplexity = 'complex';
+    
+    const deliveryInfo = deliveryService.getDeliveryInfo(orderTotal, distance, deliveryTime, orderComplexity);
+    return deliveryInfo.fee;
+  }
+  
+  return 0;
+}
+
+// تحديث عرض الإجماليات في السلة
+function updateCartTotals() {
+  const totals = calcTotals();
+  const cartSubtotal = document.getElementById('cartSubtotal');
+  const deliveryFeeLine = document.getElementById('deliveryFeeLine');
+  const deliveryFeeAmount = document.getElementById('deliveryFeeAmount');
+  const cartTotal = document.getElementById('cartTotal');
+  
+  if (cartSubtotal) cartSubtotal.textContent = formatPrice(totals.subtotal);
+  if (cartTotal) cartTotal.textContent = formatPrice(totals.total);
+  
+  // عرض/إخفاء رسوم التوصيل
+  if (deliveryFeeLine && deliveryFeeAmount) {
+    if (totals.deliveryFee > 0) {
+      deliveryFeeLine.style.display = 'flex';
+      deliveryFeeAmount.textContent = formatPrice(totals.deliveryFee);
+    } else {
+      deliveryFeeLine.style.display = 'none';
+    }
+  }
 }
 
 function updateCartUI() {
-  const { count, total } = calcTotals();
-  cartCountEl.textContent = String(count);
-  cartTotalEl.textContent = formatPrice(total);
-  checkoutBtn.disabled = count === 0;
+  const totals = calcTotals();
+  cartCountEl.textContent = String(totals.count);
+  cartTotalEl.textContent = formatPrice(totals.total);
+  
+  // تحديث عرض الإجماليات في السلة
+  updateCartTotals();
+  
+  checkoutBtn.disabled = totals.count === 0;
 
-  if (count === 0) {
+  if (totals.count === 0) {
     cartItemsEl.innerHTML = `<p class="muted" style="text-align:center; margin: 14px 0;">${t[currentLang].noCart}</p>`;
     return;
   }
@@ -1024,13 +1170,25 @@ if (cancelCustomize) cancelCustomize.addEventListener('click', closeCustomize);
 checkoutForm.addEventListener('change', (e) => {
   if (e.target.name === 'fulfillment') {
     const addressField = checkoutForm.querySelector('.address-field');
+    const distanceField = checkoutForm.querySelector('.distance-field');
     if (e.target.value === 'delivery') {
       addressField.hidden = false;
+      distanceField.hidden = false;
       addressField.querySelector('input').required = true;
+      distanceField.querySelector('input').required = true;
     } else {
       addressField.hidden = true;
+      distanceField.hidden = true;
       addressField.querySelector('input').required = false;
+      distanceField.querySelector('input').required = false;
     }
+    // تحديث رسوم التوصيل عند تغيير طريقة الاستلام
+    updateCartTotals();
+  }
+  
+  // تحديث رسوم التوصيل عند تغيير المسافة
+  if (e.target.name === 'distance') {
+    updateCartTotals();
   }
 });
 
@@ -1043,6 +1201,7 @@ checkoutForm.addEventListener('submit', async (e) => {
       phone: formData.get('phone'),
       fulfillment: formData.get('fulfillment'),
       address: formData.get('address') || undefined,
+      distance: parseFloat(formData.get('distance')) || undefined,
       notes: formData.get('notes') || undefined,
     },
     items: Array.from(cart.values()).map(({ item, qty }) => ({ 
