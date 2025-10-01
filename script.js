@@ -296,12 +296,12 @@ const defaultMenu = [
     title: '🥪 Signature Sandwiches',
     description: 'Selection of the finest L\'olivo signature sandwiches',
     items: [
-      { id: 'special-sandwich', name: "L'olivo Special Sandwich", desc: 'Emmental & Cheddar cheese, artichoke, oregano, special sauce', price: 27.6, image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.8, deliveryTime: '15-20 min' },
-      { id: 'cheese-club', name: 'Cheese Club Sandwich', desc: 'Parmesan & Emmental, tomatoes, oregano + sauce', price: 33.35, image: 'https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=300&fit=crop&crop=center', rating: 4.6, deliveryTime: '12-18 min' },
-      { id: 'roast-beef', name: 'Roast Beef Sandwich', desc: 'Smoked roast beef, emmental, mustard, oregano + sauce', price: 32.2, image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center', rating: 4.7, deliveryTime: '15-20 min' },
-      { id: 'italian-tuna', name: 'Italian Tuna Sandwich', desc: 'Italian tuna, emmental, tomatoes, oregano + sauce', price: 39.1, image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center', rating: 4.5, deliveryTime: '10-15 min' },
-      { id: 'mozzarella-bufala', name: 'Mozzarella Bufala Sandwich', desc: 'Mozzarella bufala, tomatoes, oregano, pesto, olive ciabatta bread', price: 33.35, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center', featured: true, rating: 4.9, deliveryTime: '18-25 min' },
-      { id: 'turkey-royal', name: 'Turkey Royal', desc: 'Smoked turkey, emmental, tomatoes, oregano + sauce', price: 51.75, image: 'https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&h=300&fit=crop&crop=center', rating: 4.8, deliveryTime: '20-25 min' },
+      { id: 'special-sandwich', name: "L'olivo Special Sandwich", desc: 'Emmental & Cheddar cheese, artichoke, oregano, special sauce', price: 27.6, image: 'IMG_5878.jpg', featured: true, rating: 4.8, deliveryTime: '15-20 min' },
+      { id: 'cheese-club', name: 'Cheese Club Sandwich', desc: 'Parmesan & Emmental, tomatoes, oregano + sauce', price: 33.35, image: 'IMG_5911.jpg', rating: 4.6, deliveryTime: '12-18 min' },
+      { id: 'roast-beef', name: 'Roast Beef Sandwich', desc: 'Smoked roast beef, emmental, mustard, oregano + sauce', price: 32.2, image: 'IMG_5934.jpg', rating: 4.7, deliveryTime: '15-20 min' },
+      { id: 'italian-tuna', name: 'Italian Tuna Sandwich', desc: 'Italian tuna, emmental, tomatoes, oregano + sauce', price: 39.1, image: 'IMG_5944.jpg', rating: 4.5, deliveryTime: '10-15 min' },
+      { id: 'mozzarella-bufala', name: 'Mozzarella Bufala Sandwich', desc: 'Mozzarella bufala, tomatoes, oregano, pesto, olive ciabatta bread', price: 33.35, image: 'IMG_5878.jpg', featured: true, rating: 4.9, deliveryTime: '18-25 min' },
+      { id: 'turkey-royal', name: 'Turkey Royal', desc: 'Smoked turkey, emmental, tomatoes, oregano + sauce', price: 51.75, image: 'IMG_5878.jpg', rating: 4.8, deliveryTime: '20-25 min' },
     ],
   },
   {
